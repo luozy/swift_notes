@@ -10,36 +10,66 @@
 
 #### Simple Values
 
+`var`用于声明变量，`let`用于声明常量。
+
 ```
 var myVariable = 42
 myVariable = 50
 let myConstant = 42
+```
 
+可以使用冒号`:`进行显示声明变量、常量的类型。
+
+```
 let implicitInteger = 70
 let implicitDouble = 70.0
-let explicitDouble: Double = 70
 
+let explicitDouble: Double = 70
+```
+
+变量/常量的值是不能够进行隐式的类型转换的，也就是说，如果我们需要转换一个值到不同的类型，就需要将值赋给显示声明类型的另一个变量/常量。
+
+```
 let label = "The width is "
 let width = 94
-let widthLabel = label + String(width)
 
+let widthLabel = label + String(width)
+```
+
+可以使用`\(...)`的方式，对字符串进行拼接。
+
+```
 let apples = 3
 let oranges = 5
 let appleSummary = "I have \(apples) apples."
 let fruitSummary = "I have \(apples + oranges) pieces of fruit."
+```
 
+使用`[...]`来声明数组或者字典类型，然后再`[...]`中使用数值来选择数组或字典类型变量的元素。
+
+_ps：`,`允许在数组或字典类型的最后一个元素的后面。_
+
+```
 var shoppingList = ["catfish", "water", "tulips", "blue paint"]
 shoppingList[1] = "bottle of water"
- 
+
 var occupations = [
     "Malcolm": "Captain",
     "Kaylee": "Mechanic",
 ]
 occupations["Jayne"] = "Public Relations"
+```
 
+可以使用初始化字符来声明空数组或空字典。
+
+```
 let emptyArray = [String]()
 let emptyDictionary = [String: Float]()
+```
 
+如果类型可以被推断出来，也可以不显示表明类型信息。
+
+```
 shoppingList = []
 occupations = [:]
 ```
