@@ -545,6 +545,8 @@ case let .Error(error):
 
 #### Protocols and Extensions
 
+使用`protocol`来声明一个协议（类似其他语言当中的“接口”）：
+
 ```
 protocol ExampleProtocol {
     var simpleDescription: String { get }
@@ -552,7 +554,9 @@ protocol ExampleProtocol {
 }
 ```
 
+类、枚举和结构体都可以继承并实现协议：
 
+_PS：在结构体的声明当中，使用`mutating`关子健标识成员方法，表示该成员方法将会修改结构体本身_
 
 ```
 class SimpleClass: ExampleProtocol {
@@ -577,7 +581,7 @@ b.adjust()
 let bDescription = b.simpleDescription
 ```
 
-
+使用`extension`关键字添加一个方法给一个已经存在的类型，如新的成员函数或者运算过的成员属性：
 
 ```
 extension Int: ExampleProtocol {
@@ -591,8 +595,6 @@ extension Int: ExampleProtocol {
 print(7.simpleDescription)
 ```
 
-
-
 ```
 let protocolValue: ExampleProtocol = a
 print(protocolValue.simpleDescription)
@@ -601,18 +603,23 @@ print(protocolValue.simpleDescription)
 
 #### Generics
 
+使用`<...>`来生成泛型方法或类型：
+
 ```
 func repeatItem<Item>(item: Item, numberOfTimes: Int) -> [Item] {
     var result = [Item]()
+
     for _ in 0..<numberOfTimes {
         result.append(item)
     }
+
     return result
 }
-repeatItem("knock", numberOfTimes:4)
+
+repeatItem("knock", 4)
 ```
 
-
+可以像类、枚举和结构体那样生成方法/函数的泛型表：
 
 ```
 // Reimplement the Swift standard library's optional type
@@ -624,6 +631,9 @@ var possibleInteger: OptionalValue<Int> = .None
 possibleInteger = .Some(100)
 ```
 
+在类型名后，使用`where`关键字来制定一个需求清单，在这个需求清单中，罗列传入泛型需要满足的各种条件：
+
+_如：需要实现某一个协议，需要两个类型是一样的，需要类型有一个指定的子类。_
 
 ```
 func anyCommonElements <T, U where T: SequenceType, U: SequenceType, T.Generator.Element: Equatable, T.Generator.Element == U.Generator.Element> (lhs: T, _ rhs: U) -> Bool {
