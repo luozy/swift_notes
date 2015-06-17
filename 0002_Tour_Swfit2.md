@@ -1,3 +1,5 @@
+[原文](https://developer.apple.com/library/prerelease/ios/documentation/Swift/Conceptual/Swift_Programming_Language/GuidedTour.html#//apple_ref/doc/uid/TP40014097-CH2-ID1)
+
 #### Table of Content
 
 * [Simple Values](https://github.com/MicroAndSpeed/swift_notes/blob/master/0002_Tour_Swfit2.md#simple-values)
@@ -474,7 +476,7 @@ let ace = Rank.Ace
 let aceRawValue = ace.rawValue
 ```
 
-
+枚举类型的原始值类型是`Int`，所以可以直接使用`rawValue`来设定、获取枚举的值。使用`init?(rawValue:)`来使用`rawValue`初始化一个枚举实例：
 
 ```
 if let convertedRank = Rank(rawValue: 3) {
@@ -482,7 +484,7 @@ if let convertedRank = Rank(rawValue: 3) {
 }
 ```
 
-
+如：
 
 ```
 enum Suit {
@@ -504,21 +506,25 @@ let hearts = Suit.Hearts
 let heartsDescription = hearts.simpleDescription()
 ```
 
+使用`struct`创建结构体。结构体与类有很大的相似，结构体也有成员属性以及成员方法。
 
+结构体与类不同之处在于：当结构体实例传递是值传递，而类实例传递是引用传递。
 
 ```
 struct Card {
     var rank: Rank
     var suit: Suit
+
     func simpleDescription() -> String {
         return "The \(rank.simpleDescription()) of \(suit.simpleDescription())"
     }
 }
+
 let threeOfSpades = Card(rank: .Three, suit: .Spades)
 let threeOfSpadesDescription = threeOfSpades.simpleDescription()
 ```
 
-
+枚举实例的值属于实例本身。同样的枚举成员不同的实例可以由不同的值。
 
 ```
 enum ServerResponse {
