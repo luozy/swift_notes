@@ -1,12 +1,12 @@
 #### Table of Content
 
-* Simple Values
-* Control Flow
-* Functions and Closures
-* Objects and Classes
-* Enumerations and Structures
-* Protocols and Extensions
-* Generics
+* [Simple Values](https://github.com/MicroAndSpeed/swift_notes/blob/master/0002_Tour_Swfit2.md#simple-values)
+* [Control Flow](https://github.com/MicroAndSpeed/swift_notes/blob/master/0002_Tour_Swfit2.md#control-flow)
+* [Functions and Closures](https://github.com/MicroAndSpeed/swift_notes/blob/master/0002_Tour_Swfit2.md#functions-and-closures)
+* [Objects and Classes](https://github.com/MicroAndSpeed/swift_notes/blob/master/0002_Tour_Swfit2.md#objects-and-classes)
+* [Enumerations and Structures](https://github.com/MicroAndSpeed/swift_notes/blob/master/0002_Tour_Swfit2.md#enumerations-and-structures)
+* [Protocols and Extensions](https://github.com/MicroAndSpeed/swift_notes/blob/master/0002_Tour_Swfit2.md#protocols-and-extensions)
+* [Generics](https://github.com/MicroAndSpeed/swift_notes/blob/master/0002_Tour_Swfit2.md#generics)
 
 #### Simple Values
 
