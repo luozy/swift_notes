@@ -76,9 +76,14 @@ occupations = [:]
 
 #### Control Flow
 
+使用`if-else`与`switch-case`进行条件控制，使用`for-in`、`while`与`repeat-while`进行循环控制。
+
+_ps： 标识条件的圆括号是可选的，标识操作体的大括号是必须的。_
+
 ```
 let individualScores = [75, 43, 103, 87, 12]
 var teamScore = 0
+
 for score in individualScores {
     if score > 50 {
         teamScore += 3
@@ -87,7 +92,11 @@ for score in individualScores {
     }
 }
 print(teamScore)
+```
 
+可以将`let`与`if-else`结合起来使用，在`if`语句的条件中，使用`let`声明一个常量，并赋给这个常量一个`optional`变量。当变量为`nil`时，条件为`false`。
+
+```
 var optionalString: String? = "Hello"
 print(optionalString == nil)
  
@@ -96,7 +105,11 @@ var greeting = "Hello!"
 if let name = optionalName {
     greeting = "Hello, \(name)"
 }
+```
 
+`switch`支持所有的数据类型以及比较方式。
+
+```
 let vegetable = "red pepper"
 switch vegetable {
 case "celery":
@@ -108,13 +121,21 @@ case let x where x.hasSuffix("pepper"):
 default:
     let vegetableComment = "Everything tastes good in soup."
 }
+```
 
+`for-in`可以用来遍历数组或字典。
+
+_ps：由于字典中的元素是没有顺序的，所以遍历字典时，遍历的顺序是随机的。_
+
+```
 let interestingNumbers = [
     "Prime": [2, 3, 5, 7, 11, 13],
     "Fibonacci": [1, 1, 2, 3, 5, 8],
     "Square": [1, 4, 9, 16, 25],
 ]
+
 var largest = 0
+
 for (kind, numbers) in interestingNumbers {
     for number in numbers {
         if number > largest {
@@ -122,32 +143,48 @@ for (kind, numbers) in interestingNumbers {
         }
     }
 }
-print(largest)
 
+print(largest)
+```
+
+`while`条件成立时，开始循环。
+
+```
 var n = 2
 while n < 100 {
     n = n * 2
 }
 print(n)
- 
+```
+
+`while`条件成立时，跳出循环。
+
+```
 var m = 2
 repeat {
     m = m * 2
 } while m < 100
 print(m)
+```
 
+可以使用`N..<M`在循环条件中生成一个从N到M的数值序列。
+
+```
 var firstForLoop = 0
 for i in 0..<4 {
     firstForLoop += i
 }
 print(firstForLoop)
- 
+```
+
+或
+
+```Swift
 var secondForLoop = 0
 for var i = 0; i < 4; ++i {
     secondForLoop += i
 }
 print(secondForLoop)
-
 ```
 
 #### Functions and Closures
