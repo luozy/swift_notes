@@ -446,11 +446,14 @@ let sideLength = optionalSquare?.sideLength
 
 #### Enumerations and Structures
 
+使用`enum`来创建一个枚举类型。与其他类型类似，枚举类型也可以有自己的成员函数。
+
 ```
 enum Rank: Int {
     case Ace = 1
     case Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten
     case Jack, Queen, King
+
     func simpleDescription() -> String {
         switch self {
         case .Ace:
@@ -466,13 +469,22 @@ enum Rank: Int {
         }
     }
 }
+
 let ace = Rank.Ace
 let aceRawValue = ace.rawValue
+```
 
+
+
+```
 if let convertedRank = Rank(rawValue: 3) {
     let threeDescription = convertedRank.simpleDescription()
 }
+```
 
+
+
+```
 enum Suit {
     case Spades, Hearts, Diamonds, Clubs
     func simpleDescription() -> String {
@@ -490,7 +502,11 @@ enum Suit {
 }
 let hearts = Suit.Hearts
 let heartsDescription = hearts.simpleDescription()
+```
 
+
+
+```
 struct Card {
     var rank: Rank
     var suit: Suit
@@ -500,12 +516,16 @@ struct Card {
 }
 let threeOfSpades = Card(rank: .Three, suit: .Spades)
 let threeOfSpadesDescription = threeOfSpades.simpleDescription()
+```
 
+
+
+```
 enum ServerResponse {
     case Result(String, String)
     case Error(String)
 }
- 
+
 let success = ServerResponse.Result("6:00 am", "8:09 pm")
 let failure = ServerResponse.Error("Out of cheese.")
  
@@ -524,7 +544,11 @@ protocol ExampleProtocol {
     var simpleDescription: String { get }
     mutating func adjust()
 }
+```
 
+
+
+```
 class SimpleClass: ExampleProtocol {
     var simpleDescription: String = "A very simple class."
     var anotherProperty: Int = 69105
@@ -545,7 +569,11 @@ struct SimpleStructure: ExampleProtocol {
 var b = SimpleStructure()
 b.adjust()
 let bDescription = b.simpleDescription
+```
 
+
+
+```
 extension Int: ExampleProtocol {
     var simpleDescription: String {
         return "The number \(self)"
@@ -555,7 +583,11 @@ extension Int: ExampleProtocol {
     }
 }
 print(7.simpleDescription)
+```
 
+
+
+```
 let protocolValue: ExampleProtocol = a
 print(protocolValue.simpleDescription)
 // print(protocolValue.anotherProperty)  // Uncomment to see the error
@@ -572,7 +604,11 @@ func repeatItem<Item>(item: Item, numberOfTimes: Int) -> [Item] {
     return result
 }
 repeatItem("knock", numberOfTimes:4)
+```
 
+
+
+```
 // Reimplement the Swift standard library's optional type
 enum OptionalValue<T> {
     case None
@@ -580,7 +616,10 @@ enum OptionalValue<T> {
 }
 var possibleInteger: OptionalValue<Int> = .None
 possibleInteger = .Some(100)
+```
 
+
+```
 func anyCommonElements <T, U where T: SequenceType, U: SequenceType, T.Generator.Element: Equatable, T.Generator.Element == U.Generator.Element> (lhs: T, _ rhs: U) -> Bool {
     for lhsItem in lhs {
         for rhsItem in rhs {
