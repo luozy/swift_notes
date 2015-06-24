@@ -53,7 +53,7 @@ class Rainbow: UIView {
 
 现在，你已经在Storyboard中创建了视图，是时候创建我们的自定义视图类了。我们将使用Swift类模板来创建类。命名它为“Rainbow”。
 
-![](imgs/1001_Demo3.gif)
+![](imgs/1001_Demo3.jpg)
 
 > Then insert the following code in the class:
 
@@ -77,7 +77,7 @@ class Rainbow: UIView {
 
 就像上面提到的，这个虚拟类是UIView的子类。为了在渲染的时候使用我们的自定义类，我们需要重载上面呈现的代码。然后通过选择辅助编辑器来分割视图：
 
-![](imgs/1001_Demo4.gif)
+![](imgs/1001_Demo4.png)
 
 > Once done, select the main storyboard in the assistant editor, so you can see what you are building in real time. Remember to change the class name of the view to “Rainbow” under the Identity inspector:
 
@@ -112,7 +112,7 @@ class Rainbow: UIView {
 
 这里，我们使用默认的颜色来预定义每一个属性，然后告诉他，在用户每一次更改它的值的时候重绘视图。最重要的是，我们给每一个属性都加上`@IBIspectable`关键字。如果你查看视图的属性指示器，你将找到这些视觉属性：
 
-![](imgs/1001_Demo6.gif)
+![](imgs/1001_Demo6.png)
 
 > Cool, right? By indicating the properties as IBInspectable, you can edit them visually using color picker.
 
@@ -197,19 +197,19 @@ func addCirle(arcRadius: CGFloat, capRadius: CGFloat, color: UIColor) {
 
 > [UIBezierPath](https://developer.apple.com/library/prerelease/ios/documentation/UIKit/Reference/UIBezierPath_class/index.html)
 
-![](imgs/1001_Demo7.gif)
+![](imgs/1001_Demo7.jpg)
 
 > With the IBInspectable properties, you are now free to change the color of each circle right in the Interface Builder without diving into the code:
 
 使用`IBInspectable`属性，你现在可以在Interface Builder中自由地正确修改每一个圆，而不用沉浸在代码中。
 
-![](imgs/1001_Demo8.gif)
+![](imgs/1001_Demo8.png)
 
 > Obviously, you can further expose arcRadius as an IBInspectable property. I’ll leave it as an exercise for you.
 
 显然地，你可以更深入的挖掘`arcRadius`作为一个`IBInspectable`属性。
 
-![](imgs/1001_Demo9.gif)
+![](imgs/1001_Demo9.jpg)
 
 #### Summary
 
