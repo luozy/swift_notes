@@ -1,0 +1,6 @@
+How to Use iOS Charts API to Create Beautiful Charts in Swift
+===
+
+> Using charts to display data can help users understand the information more easily than they would if it were presented in a table, especially when dealing with a lot of data. With charts, you can easily see patterns in the data at a glance as opposed to reading through a whole table (or several tables) to get this information. The use of charts has been a common feature in business and fitness apps.
+
+> In this article, we’ll look at how to add charts to your application using the [ios-charts library](https://github.com/danielgindi/ios-charts) by [Daniel Cohen Gindi](https://github.com/danielgindi). ios-charts is an iOS port of the fairly popular Android library [MPAndroidChart](https://github.com/PhilJay/MPAndroidChart) created by [Philipp Jahoda](https://github.com/PhilJay). With this library, you can include various types of charts in your app fairly quickly and easily. With a few lines of code, you can have a fully working and interactive chart, that is highly customizable.
