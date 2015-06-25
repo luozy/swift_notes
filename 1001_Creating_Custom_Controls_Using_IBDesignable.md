@@ -224,7 +224,6 @@ func addCirle(arcRadius: CGFloat, capRadius: CGFloat, color: UIColor) {
 #### Reference
 
 1. [UIView](https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIView_Class/index.html#//apple_ref/doc/uid/TP40006816)
-2. 
 2. [CAShapeLayer](https://developer.apple.com/library/ios/documentation/GraphicsImaging/Reference/CAShapeLayer_class/)
 2. [UIBezierPath](https://developer.apple.com/library/prerelease/ios/documentation/UIKit/Reference/UIBezierPath_class/index.html)
 
