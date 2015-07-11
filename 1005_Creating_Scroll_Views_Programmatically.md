@@ -229,9 +229,11 @@ In the above code, we add a gesture recognizer to the scrollview, that recognize
 
 Run the app and you should be able to zoom in and out by double tapping.
 
-#### Creating Scroll Views in Interface Builder
+#### Creating Scroll Views in Interface Builder 在Interface Builder中创建滚动视图
 
 Implementing the scroll view similar to what we’ve done in Interface Builder is simpler than in code. These are the quick steps to get what we just built in code using storyboards.
+
+在Interface Builder中实现滚动视图要比我们使用编码的方式实现简单。下面是一些使用故事版来创建滚动视图的步骤。
 
 In Main.storyboard, drag another view controller onto the canvas. Set it as the initial view controller by either dragging the Storyboard Entry Point arrow from the other view controller, or by selecting the new view controller and checking the Is Initial View Controller checkbox in the Attributes Inspector.
 
