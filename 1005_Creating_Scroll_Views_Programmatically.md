@@ -237,29 +237,47 @@ Implementing the scroll view similar to what we’ve done in Interface Builder i
 
 In Main.storyboard, drag another view controller onto the canvas. Set it as the initial view controller by either dragging the Storyboard Entry Point arrow from the other view controller, or by selecting the new view controller and checking the Is Initial View Controller checkbox in the Attributes Inspector.
 
+在`Main.storyboard`中，拖拽另一个视图控制器到画板。通过从其他视图控制器拖拽Storyboard Entry Point来设置它为初始化试图控制器，或者通过选择新创建的视图控制器并在Attributes Inspector中选中`initial View Controller`复选框。
+
 Add a Scroll View to the view controller’s view and pin all its edges so that it fills the screen.
+
+添加一个滚动视图到视图控制器的视图，然后缩放它的边界以使其填满屏幕。
 
 ![](imgs/1005_Demo9.png)
 
 Then add an Image View to the Scroll View and pin all its edges to the scroll view.
 
+然后添加一个图片控制器到滚动视图，并缩放所有它的边界到滚动视图的边界。
+
 ![](imgs/1005_Demo10.png)
 
 Remember that a scroll view needs to know its content size. When you set the image of the image view, its size will be used as the content size of the scroll view.
 
+记住，一个滚动视图需要知道它的内容尺寸。当你设置图片视图的图片时，它的尺寸将被用于作为滚动视图的内容尺寸。
+
 In Attributes Inspector, select image.png as the Image of the Image View. Resolve any Auto Layout issues by updating the frames. Run the app and you should have the same scrolling view we had in just a few set up steps and without writing a line of code. You can take a look at the Attributes Inspector, on selecting the Scroll View, to see what attributes you can set on it here. You can, for instance, set its minimum and maximum zoom scale.
+
+在Attibutes Inspector中，选择image.png作为图片视图的图片。通过修改边框来确定Auto Layout。运行这个应用，你讲看到我们没有写一行代码，仅通过简单的几步就创建出的滚动视图。你可以选择滚动视图，然后查看Attributes Inspector，看看你在这里都设置了哪些属性。例如，你可以看看它最小和最大的缩放比例。
 
 For zooming, you’ll still need to implement the viewForZoomingInScrollView() delegate method as we did previously. We aren’t going to cover that here as it will just be a repetition of the last section. This means that if you need more features for your scroll view, you’ll still need to get into code.
 
-#### Nested Scroll Views
+对于缩放，你需要实现`viewForZoomingScrollView()`委托方法，就像我们之前做的那样。我们在这里不重复这一过程，因为这将是上一节内容的重复。这意味着如果你需要给你的滚动视图更多的特性，你仍然需要进行编码。
+
+#### Nested Scroll Views 嵌套滚动视图
 
 It is possible to nest a scroll view inside another scroll view. This nesting can either be same directional or cross directional. For the code files for this part of the tutorial, use the NestedScrollViews starter project provided.
 
-#### Same Directional Scrolling
+将一个滚动视图放于另一个滚动视图中是可行的。这种嵌套既可以使同样的滚动方向，也可以是交叉的。对于这部分教程的代码文件，使用`NestedScrollViews`。
+
+#### Same Directional Scrolling 同样方向的滚动
 
 Same-directional scrolling occurs when a UIScrollView that is a subview of a UIScrollView both scroll in the same direction. You can use this to add a section in your main scroll view’s view that contains additional separate data. You can also use same directional scroll views to achieve some UI effects like the parallax effect. In our demo app, we’ll use same directional scrolling and set different scrolling speeds for the two scroll views. This will result in a parallax effect of the views.
 
+同样的滚动方向指当一个`UIScrollView`是另一个`UIScrollView`的子视图且在同样的方向进行滚动。你可以这样在包含附加数据的主滚动视图的视图中添加一个节。你也可以使用同样方向的滚动视图来接受一些UI效果，类似平行效果。在我们的示例引用中，我们将在两个滚动视图中，使用同样的滚动方向，并且设置不同的滚动速度。
+
 Open the storyboard file of the NestedScrollViews project, you should see a view controller with two sibling scroll views inside the main view. The scroll views have IDs of Background and Foreground. The Background scroll view has an image view with all its edges pinned to the scroll view with no padding. The image has been set to image.png. Both scroll views are pinned to the View with no padding.
+
+打开`NestedScrollViews`项目的故事版文件，你将看到一个带有两个滚动视图的视图控制器。滚动视图有背景`IDs`以及前景`IDs`。背景滚动视图有一个图片视图，这个图片视图的所有边界都缩放到与滚动视图的一样大小。图片被设置成image.png。两个滚动视图都缩放到与主视图同样的大小。
 
 In the Foreground scroll view, there are some labels added to it and a container view. The labels are only there so that we have a populated scroll view when we run the app. The container view will be used in the next section where we’ll look at cross directional scrolling. Incase you are wondering about the long size of the view controller, this is a setting you can set by selecting the view controller, going to the Size Inspector, changing its Simulated Size to Freeform and setting a size for this. In our case, I increased the height to 1,200. This is only to help you visually when you are working on your views and need more space on the view controller. It won’t affect the running app. It comes in handy when you are laying out elements that will likely be out of view when you first run the app, like the elements at the lower half of our scroll view.
 
@@ -269,6 +287,8 @@ Since we already have the UI set up, creating the parallax effect will be quick.
 
 We’ll first create outlets for the two scroll views. Open the Assistant Editor and create an outlet for the Background scroll view named background and another for Foreground named foreground. You should have the following in ViewController.swift.
 
+我们将为两个滚动视图创建outlets。打开Assistant Editor并且为背景滚动视图创建一个outlet，命名为`background`，另一个前景视图的outlet命名为foreground。在`ViewController.swift`文件中将包含下面的内容。
+
 ```
 @IBOutlet weak var background: UIScrollView!
 @IBOutlet weak var foreground: UIScrollView!
@@ -276,7 +296,11 @@ We’ll first create outlets for the two scroll views. Open the Assistant Editor
 
 We’ll need to know when the foreground view is scrolled, so we can calculate the amount the background should scroll by and use this value to scroll it. We’ll use a UIScrollViewDelegate method for this.
 
+我们将需要知道前景视图合适被滚动，以便我们可以计算`background`将滚动的数值，并且使用这个数值来滚动它。我们将使用`UIScrollViewDelegate`方法来做到这点。
+
 Change the class declaration of ViewController as shown.
+
+修改`ViewController`的声明类，就像下面所示。
 
 ```
 class ViewController: UIViewController, UIScrollViewDelegate {
@@ -284,11 +308,15 @@ class ViewController: UIViewController, UIScrollViewDelegate {
 
 Add the following to the bottom of viewDidLoad(). We only care about the foreground, so we wont set the background’s delegate.
 
+在`viewDidLoad()`底部添加下面的内容。我们仅仅关心`foreground`，所以我们不会设置`background`的委托。
+
 ```
 foreground.delegate = self
 ```
 
 Add the following function to the class.
+
+添加下面的方法到类。
 
 ```
 func scrollViewDidScroll(scrollView: UIScrollView) {
@@ -305,7 +333,7 @@ In the above code, we get the height of the foreground and calculate by how much
 
 ![](imgs/1005_Demo15.gif)
 
-#### Cross Directional Scrolling
+#### Cross Directional Scrolling 交叉滚动方向
 
 Cross-directional scrolling occurs when a scroll view that is a subview of another scroll view scrolls at a 90 degree angle. We’ll create this next.
 
