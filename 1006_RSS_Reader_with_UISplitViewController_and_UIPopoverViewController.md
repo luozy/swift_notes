@@ -1,5 +1,7 @@
-Building an RSS Reader Using UISplitViewController and UIPopoverViewController
+使用UISplitViewController与UIPopoverViewController构建一个RSS阅读器
 ===
+
+[原文](http://www.appcoda.com/building-rss-reader-using-uisplitviewcontroller-uipopoverviewcontroller/)
 
 Just a few weeks ago Apple introduced the new iPhone devices, the iPhone 6 and iPhone 6 Plus. As we all saw, the screen sizes are bigger than all the older iPhone screens, meaning that any new applications must be build in that way so they work on all devices. Even more, if we consider the iPad screens, then the number of screen sizes that any application should adapt to becomes even greater. From a first point of view, that may seem a big hassle for developers, however that’s not true at all.
 
@@ -7,23 +9,23 @@ In iOS 8, Apple introduces the so-called adaptive user interface or adaptive lay
 
 ![](imgs/1006_Demo1.jpg)
 
-Further than all the above, it’s well known that iOS 8 not only contains new features, but great improvements to existing ones as well. Of course, view controllers could not just stay out of those improvements, and that’s more or less what we are going to talk about. Specifically, we are going to focus on two special view controllers, the UISplitViewController and the UIPopoverViewController.
+Further than all the above, it’s well known that iOS 8 not only contains new features, but great improvements to existing ones as well. Of course, view controllers could not just stay out of those improvements, and that’s more or less what we are going to talk about. Specifically, we are going to focus on two special view controllers, the `UISplitViewController` and the `UIPopoverViewController`.
 
-Up to the seventh version of the iOS (iOS 7), both of these two view controllers could be integrated only in iPad applications. Now, the new iOS SDK allows us to use them in iPhone applications too, and that’s what exactly we are going to do here. My goal is to show you how you can add a split view controller and a popover view controller to an iPhone app, and how they can be displayed in all the available screen sizes. It might look a bit difficult or weird at the beginning how all that stuff works, but once you get the idea then you’ll be able to use them in every app you want.
+直到iOS的第七个版本（iOS7），这两个视图控制器仅可以用在iPad引用当中。现在，新的iOS SDK允许我们在iPhone引用中使用他们，这就是我们在这里将要做的事情。我的目标是呈现给你怎样才能添加一个split视图控制器和一个popover视图控制器到iPhone应用，以及他们是怎样能够现实在所有可用的屏幕尺寸当中。它也许在不同的屏幕尺寸中看起来有一点不同或怪异，但是一旦你知道方法，你就可以自己去在不同的应用中按照你想要的效果去使用它们。
 
-Besides all that, the code we will write is going to be in Swift. Right exactly as we did in my last tutorial, we will meet here also how various techniques can be implemented using Swift, and I believe that apart from the view controllers that we’ll examine, you’ll get extra benefits from the rest of our work as well.
+除此之外，我们将要写Swift语言的代码。非常明确的是，就像在我上一篇教程中做的，我们还将看到多种技术是如何使用Swift来实现的，并且我相信，通过我们将实验的视图控制器，你也将从我们作品的其余部分获得额外的收益。
 
-Lastly, as a piece of advice I would like to prompt you to watch the WWDC 2014 Session videos #214 and #216 regarding the new adaptive layout concepts, the split view controller and the popover view controller, if you haven’t still done so. Please take the time and watch them, as you will be able to understand a lot easier what we will discuss here afterwards. With no more delay, let’s get started!
+最后，给出一个建议，建议你查看[WWDC 2014 Session视频](https://developer.apple.com/videos/wwdc/2014/)#214以及#216关于新的自适应布局概念、split视图控制器以及popover视图控制器，如果你还没有看过的话。请花些时间看一下他们，然后你将更容易理解下面我们将讨论的内容。不再罗嗦，下面就让我们开始吧！
 
-#### Demo App Overview
+#### 示例应用概览
 
-In a couple of older tutorials of mine, I used the NSXMLParser class of the iOS SDK for downloading and parsing data from the web. Here, we are going to use this class once again, but this time we will see how the related XML parsing code can be written in Swift (something that I consider quite useful for many developers who want to deal with XML in Swift). The source of the data that we will download and parse is going to be from our own RSS feed, the RSS feed of Appcoda.
+在我的一些旧的教程中，我使用iOS SDK的NSXMLParser类来下载以及解析来自网络的数据。这果，我们将再次使用这个类，但是这次我们将看到相关的SML解析代码使用Swift是如何写的（我认为这对于那些想要使用Swift处理XML的人是相当有用的）。我们将下载并解析的数据源将来自我们自己的RSS源，Appcoda的RSS订阅源。
 
-For the sample application of the tutorial, we will create a simple project for iPhone devices only. This application will contain just a split view controller, which we will configure programmatically so it properly works on iPhone. As you all know, a split view controller is composed by two other view controllers (children view controllers), a primary and a secondary view controller. Our primary view controller will have a table view (actually is going to be a table view controller), in which we will list all the tutorial titles.
+对于这个教程的示例应用，我们将仅仅为iPhone设备创建一个简单的项目。这个应用仅仅包含一个split视图控制器，我们将编码配置这个视图控制器，以便它适于工作在iPhone上。就像你知道的，一个split视图控制器由两个其他的视图控制器组成（子视图控制器），一个主要的和一个将要的视图控制器。我们的主要的视图控制器将有一个表视图（实际上将是一个表视图控制器），在这个表视图控制器中我们将罗列出所有的教程标题。
 
-The second view controller will contain a web view and a toolbar. When a topic is tapped on the primary view controller, the whole tutorial will be loaded and displayed in the web view (we’ll provide it with the proper link). In the toolbar will exist two bar button items (plus a flexible space bar button item): The first one will toggle the display mode of the split view, meaning that it will make visible or not the primary view controller. In iOS 8, the UISplitViewController class provides a method that returns a bar button item that can be used to hide the primary view controller. In order to make it visible again, we will replace that default button item with a custom one of ours. Besides all that, we’ll implement the app in such way, so these two button items to be displayed only in the proper device orientation. Of course, the custom button item that will make the tutorial list visible cannot and won’t be appeared at the same time with the predefined button item of the SDK that we’ll use in order to hide the primary VC. Lastly, the second button item of the toolbar will display in a popover view controller the publish date of the displayed tutorial.
+第二个视图控制器将包含一个`Web View`以及一个工具条。当在主视图上一个条目被点击时，教程的内容将被加载并显示在`web view`当中（我们将提供它合适的链接）。上工具条上，将存在两个`bar button item`（一个额外flexible space bar button item）：第一个将触发split视图的显示访求，意味着它将显示或隐藏主视图控制器。在iOS8中，`UISplitViewController`类提供一个方法，这个方法将返回一个可以用于隐藏主视图控制器的`bar button item`。为了让主视图控制器再次可见，我们将使用一个我们自己定义的按键来替换默认的`button item`。除此之外，我们将这样实现这个应用，让这两个按钮仅仅显示在适用的设备方向上。当然，自定义的按钮将使教程清单可见，不能以及将不与我们为了隐藏主视图控制器的SDK预定义的按钮同时显示。最后，工具栏上的第二个按钮将在一个popover视图控制器中显示要显示的教程的发布日期。
 
-If all these seem confusing, then the next screenshots will make things clear:
+如果所有这些看起来比较混乱，接下来的屏幕截图将让其看来来清晰：
 
 ![](imgs/1006_Demo2.png)
 
@@ -31,7 +33,7 @@ If all these seem confusing, then the next screenshots will make things clear:
 
 ![](imgs/1006_Demo4.png)
 
-#### Creating the App and Adding Some Files
+#### 创建应用并添加一些文件
 
 Let’s get started by creating a new Xcode project and by choosing the Single View Application template for it. You can set the SplitAndPopover value as the name for the app (that’s the one I used here), and make sure that the specified programming language is the Swift, while the selected device is the iPhone.
 
@@ -74,7 +76,7 @@ The NSObject class, named XMLParser.
 
 ![](imgs/1006_Demo9.png)
 
-#### Designing the UI
+#### 设计UI
 
 Now that all the class files we’ll need are ready, let’s setup the interface of the app. Open the Main.storyboard file, and wait until the Interface Builder appears. The first step, is to add a Split View Controller from the Object Library to the canvas, so just locate it and drag it there.
 
@@ -145,7 +147,7 @@ Now, head back to the Interface Builder and do the proper connections. Select th
 
 The most of our work in the Interface Builder is now over. Quite later we’ll return, and we’ll add a new scene for the popover controller, but until then we are just perfect. Let’s keep going by writing some code!
 
-#### Getting and Parsing XML Data
+#### 获取并解析XML数据
 
 One of the first things that we are going to deal with in this tutorial is to download and parse the sample data of the demo application we are developing. As I said to the app overview section, the source of our data will be the RSS feed of the Appcoda website (this website), and it’s our duty to parse that feed and extract only the piece of data we need.
 
@@ -494,7 +496,7 @@ As you see, once we start loading the URL contents we make the web view and the 
 
 All of the above consist of the code we need in both the TopicsTableViewController and the TutorialViewController classes in order to list all the parsed tutorial data and to display the proper one, after having selected a topic. With that mechanism ready and working, let’s focus on the split view controller and other new technologies in iOS 8.
 
-#### Size Classes and Trait Collections
+#### Size类与Trait收集器
 
 Before we begin the actual work with the split view controller and the rest of the stuff we are about to see, it’s necessary to talk about two new important concepts regarding the adaptive layout. These are the Size Classes and the Trait Collections, and without having the minimum required knowledge about them at least, it’s not possible to carry on. Of course, I recommend you to find more information in the Apple documentation or the respective WWDC videos in addition to what you’ll read here. However, if you are aware of these meanings and you feel comfortable with them, then you may skip this section, otherwise please be patient enough and keep reading.
 
@@ -890,7 +892,7 @@ Now feel free to run and test the app. Play around with the orientation changes 
 
 ![](imgs/1006_Demo26.png)
 
-#### The Popover Controller
+#### Popover控制器
 
 Up to iOS 7, an UIPopoverController could be used only in iPad devices. However, that’s a fact that belongs to the past since iOS 8, as thanks to the adaptive layout and the new features the UIKit framework supports, popover controllers can now be displayed in iPhone devices too. We have already talked about the adaptive layout, so I would like to mention a couple of words about a new great advancement regarding the UIKit framework, which has to do with the way modal (presented) view controllers are managed. iOS 8 introduces a new class named UIPresentationController, and an instance of this class handles a presented view controller throughout its lifetime. The interesting thing about a presentation controller is that it’s created on the fly by UIKit, once the view controller has been presented. As you understand, a whole new programming stuff such as new methods, properties and protocols have been integrated and provided to developers for usage. Presentation controllers can be used to control and specify various aspects of a view controller, like its style, transition, special properties and a lot more. Keep talking about this new concept would be beyond the scope of this tutorial as there’s a huge discussion regarding it, but I prompt you to read at least this documentation for getting a better taste of it. Also, I recommend again to go through the WWDC videos and watch any related material you find about that topic.
 
@@ -1022,7 +1024,7 @@ We are ready now! Run the app, and after having selected a tutorial topic, tap o
 
 As I said before, note that there are other display styles beyond the popover as well, however none of them makes the view controller appear as a normal popover controller. Instead, they make it appear in fullscreen mode, or over any other existing content on the screen. I’m not going into details about all that, I leave you to do your research and play around with all that stuff if you want.
 
-#### Summary
+#### 总结
 
 The greatest conclusion that comes out of this tutorial, is that with the adaptive layout the user interface design can now be done on a device-independent basis. Trait collections and size classes provide a brand new way to work with any kind of device, and things seem to be easier than they used to be in the past. Moreover, through this tutorial we saw how view controllers that were initially meant to be used only in iPad can now be integrated in iPhone applications too. New technologies and features, such as the presentation controllers, allow all that to become true, and surely there are still more to explore. Anyway, beyond the implementation of the split view controller and the popover controller, the two concepts that were our main goal here, we also met and learnt how other interesting stuff work in Swift, such as the XML data parsing, posting and receiving notifications, etc. I’m closing by simply saying that I hope you found this post useful and interesting, and of course, use the comments area for sharing your thoughts. Your feedback is always welcome and helpful!
 
