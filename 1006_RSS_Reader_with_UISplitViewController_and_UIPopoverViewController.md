@@ -35,44 +35,44 @@ Further than all the above, it’s well known that iOS 8 not only contains new f
 
 #### 创建应用并添加一些文件
 
-Let’s get started by creating a new Xcode project and by choosing the Single View Application template for it. You can set the SplitAndPopover value as the name for the app (that’s the one I used here), and make sure that the specified programming language is the Swift, while the selected device is the iPhone.
+让我们通过创建一个新的Xcode项目并且选择`Single View Application`模板。你可以设置`SplitAndPopover`值作为这个应用的名称（在这里我使用这个名称），然后确认选择的编程语言是Swift，选择的设备是iPhone。
 
 ![](imgs/1006_Demo5.png)
 
-Get finished with the project creation by selecting a directory to save it in.
+为创建的项目选择一个目录来存储它。
 
-Now, before doing anything else, let’s create the following classes:
+现在，在开始之前，让我们创建下面的类：
 
-1. A UITableViewController that we’ll use as the primary view controller (of the split view controller which we’ll add next to the project).
-2. A UIViewController that we’ll use as the secondary view controller of the split view controller.
-3. A UIViewController class that we will use as a custom container view controller. There’s a specific section dedicated to that, so it’s okay if you’re not sure what’s this about.
-4. A NSObject class in which we’ll implement the XML data parsing functionality.
+1. 一个`UITableViewController`，我们将使用它作为主视图控制器。
+2. 一个`UIViewController`，我们将使用它作为split视图控制器的将要视图控制器。
+3. 一个`UIViewController`类，我们将使用它作为定制窗口视图控制器。下面有一个小节专门用来说明它，所以如果你不清楚这个是用来做什么的也没有问题。
+4. 一个`NSObject`类，我们将在这个类里面实现解析XML数据的函数。
 
-In the last section of the tutorial we’ll create one more class regarding the popover controller, but for the time being we’ll focus on the above only. I’m just telling in advance that I want the above classes (files) to be created all together, so we can use them at once, starting from the next part of the tutorial.
+在教程的最后一节，我们将创建另一个有关popover控制器的类，但是出于时间关系，我们聚焦在之前提到的类上面。
 
-For creating each one of the above, here’s in short what you should do. Note that the next procedure should be done four times in total:
+为了创建上面说的文件，下面是你需要做的事情的简要清单。注意，每创建每一个文件时，都应该做下面的这些步骤：
 
-1. Go to the File > New > File… menu in Xcode.
-2. Create a Cocoa Touch Class.
-3. Set the proper Subclass of each class.
-4. Set the proper Class name.
-5. Create the each class.
+1. 在Xcode中，依次点击：File > New > File...
+2. 创建一个Cocoa Touch类
+3. 设置每一个类的Subclass属性
+4. 设置Class Name属性
+5. 创建每一个类　
 
-The next figures illustrate each case:
+接下来说明每一个用例：
 
-The table view controller class for the primary view controller of the split VC, named TopicsTableViewController.
+用于主视图控制口器的表视图控制器，命名为`TopicsTableViewController`。
 
 ![](imgs/1006_Demo6.png)
 
-The view controller for the second view controller of the split VC, named TutorialViewController.
+为次要视图控制器命名为`TutorialViewController`。
 
 ![](imgs/1006_Demo7.png)
 
-The container view controller class, named ContainerViewController.
+容器视图控制器类命名为`ContainerViewController`。
 
 ![](imgs/1006_Demo8.png)
 
-The NSObject class, named XMLParser.
+`NSObject`类命名为`XMLParser`。
 
 ![](imgs/1006_Demo9.png)
 
