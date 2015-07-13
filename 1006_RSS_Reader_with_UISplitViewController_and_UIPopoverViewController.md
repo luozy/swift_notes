@@ -78,43 +78,45 @@ Further than all the above, it’s well known that iOS 8 not only contains new f
 
 #### 设计UI
 
-Now that all the class files we’ll need are ready, let’s setup the interface of the app. Open the Main.storyboard file, and wait until the Interface Builder appears. The first step, is to add a Split View Controller from the Object Library to the canvas, so just locate it and drag it there.
+现在，所有我们需要的的类文件已经准备好了，让我们设置app的界面。打开`Main.storyboard`文件，然后等待`Interface Builder`出现。第一步，从`Object Library`添加一个`Split View Controller`到画板，要做的是找到它并将它拖到画板里面。
 
 ![](imgs/1006_Demo10.png)
 
-Once you do so, grab the arrow pointing to the default View Controller scene, and move it at the left side of the split view controller scene:
+当你拖动完成后，将箭头从默认的视图控制器移动到split视图控制器最左面的视图：
 
 ![](imgs/1006_Demo11.png)
 
-Then, you can delete the View Controller scene, and also you can delete the ViewController.swift file from the Project Navigator.
+然后，你可以删除默认的视图近面器，然后从`Project Navigator`中删除`ViewController.swift`。
 
-Let’s setup now each view controller as needed. Select the Table View Controller scene (the one that the navigation controller points to), and set a custom class name by opening the Utilities pane and then the Identity Inspector. In the Custom Class section set the TopicsTableViewController value in the Class field. Also, replace navigation item title it with the Appcoda Tutorials value.
+让我们按照需要设置每一个视图控制器。选择`Table View Controller`（导航视图控制器指向的），然后通过打开`Utilities`然后打开`Identity Inspector`设置一个自定义类。在`Custom Class`节，在`Class`字段，设置`TopicsTableViewController`值。同时，替换导航项目的标题为"Appcoda Tutorials"。
 
 ![](imgs/1006_Demo12.png)
 
-Then, select the table view cell prototype, and select the Basic style in the Attributes Inspector. Also, set the idCell as its identifier value. Next, open the Size Inspector, and set the Row Height to 80.
+然后，选择列表视图单元原型，然后在`Attributes Inspector`中选择`Basic`样式。同时，设置`idCell`作为它的标识值。下一步，打开`Size Inspector`，并设置`Row Height`为80.
 
 By setting the basic style to the table view cell, a label is appeared on it. Select that label, set the font size to 14pt, and the its Lines to 3.
 
-Here’s how this scene should look like now:
+通过设置表视图单元为`Basic`样式，一个标签显示在表视图中。选择这个标签，设置字号为14pt，以及`Lines`为3.
+
+下面是应该看到的：
 
 ![](imgs/1006_Demo13.png)
 
-Let’s continue by configuring the second view controller of the split VC. Begin as before, and set its custom class to the TutorialViewController value. Don’t rush to move forward however, as in this case we must specify a Storyboard ID value that we’ll need it later in code. For this one, specify the idTutorialViewController value.
+让我们继续配置split视图控制器的次要视图。在开始之前，设置它的自定义类为`TutorialViewController`值。暂时不要急于推进，在这个用例中，我们必须指定一个`Storyboard ID`值，在代码中，稍后我们将需要它。对于此处，指定为`idTutorialViewController`。
 
 ![](imgs/1006_Demo14.png)
 
-We’ll add some subviews now. At first, get a UILabel from the Object Library, and add it to the scene. Set the No tutorial was selected string as its text. Make sure then to move the label at the center of the scene. Click on the Align button at the bottom-right side of the Interface Builder, and check both the Horizontal center in container and Vertical center in container constraints.
+我们现在将添加一些子视图。首先，从`Object Library`中取得一个`UILabel`，然后添加它到场景中。设置`No Tutorial`为它的文本。确认移动这个标签到场景的中间。然后点击在Interface Builder右下方的Align按钮，设置`Horizontal center in container`以及`Vertical center in container`约束。
 
 ![](imgs/1006_Demo15.png)
 
-Next, drag and drop a UIToolbar object from the object library. Place it at the bottom side of the scene, and rename the existing button item to Publish Date. Also, get a flexible space bar button item and add it to the left of the existing button item in the toolbar. We’ll set the constraints for the toolbar in a while.
+接下来，从`Object Library`拖拽一个`UIToolbar`对象进来。放置它在场景的底部，并重命名已经存在的按钮内容为“Publish Date”。同时，取得一个`Flexible Space Bar Button`并添加它到工具栏中已经存在的按钮的左侧。我们将为工具栏设置约束。
 
-Now, grab a UIWebView object from the library, and add it to the scene. Make sure to cover the whole space, except for the toolbar. The web view should overlay the label.
+现在，从控件库中拿出一个`UIWebView`，并且添加它到场景当中。确认覆盖全部的空间，除了工具栏。这个`Web View`将覆盖之前的标签。
 
-Let’s setup the constraints for the toolbar and the web view now. Select the toolbar, and then click on the Pin toolbar at the bottom-right side of the IB. Enable the trailing, leading, top, bottom constrains, as well as the Height constraint by checking the respective checkbox. Add these five constraints.
+现在让我们为工具栏以及web视图设置约束。选择工具栏，然后点击在IB下面的`Pin`工具栏。启用上、下、左、右以及高度约束。
 
-Then, select the web view, and click once again to the Pin button. Enable the trailing, leading, top and bottom constraints, and add them too. Here’s how the Tutorial View Controller should look like:
+然后选择`Web View`，并再次点击`Pin`按钮。启用上、下、左、右约束，工添加它们。下面展示`Tutorial View Controller`应该的样子：
 
 ![](imgs/1006_Demo16.png)
 
