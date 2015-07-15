@@ -120,7 +120,7 @@ By setting the basic style to the table view cell, a label is appeared on it. Se
 
 ![](imgs/1006_Demo16.png)
 
-Finally, we need to create three IBOutlet properties for the web view, the toolbar and the bar button item of the toolbar. Also, we’ll need an IBAction method for the bar button item. Open the TutorialViewController.swift file, and add the following IBOutlet properties:
+最后，我们需要为Web View创建三个`IBOutlet`属性，工具栏和工具栏按钮项目。同时，我们将需要给工具栏按钮项目提供一个`IBAction`方法。打开`TutorialViewController.swift`文件，以及添加下面的`IBoutlet`属性：
 
 ```swift
 class TutorialViewController: UIViewController {
@@ -134,40 +134,40 @@ class TutorialViewController: UIViewController {
 }
 ```
 
-Also, add the next IBAction method:
+接下来，添加`IBAction`方法：
 
 ```swift
 @IBAction func showPublishDate(sender: AnyObject) {
 }
 ```
 
-We are going to work with this method at the last part of the tutorial, when we’ll deal with the popover controller.
+我们将在教程最后一部分使用这个方法，当我们处理popover控制器时。
 
-Now, head back to the Interface Builder and do the proper connections. Select the Tutorial View Controller scene, and then in the Utilities pane go to the Connections Inspector. Select each IBOutlet property, and connect it to the appropriate subview. Don’t forget to connect the IBAction method to the bar button item too.
+现在，返回Interface Builder然后进行属性连接。选择`Tutorial View Controlelr`场景，然后再`Utilities`面板找到`Connections Inspector`。选择每一个`IBOutlet`属性，然后连接它到合适的子视图。不要忘记连接`IBAction`方法到工具栏按钮。
 
 ![](imgs/1006_Demo17.png)
 
-The most of our work in the Interface Builder is now over. Quite later we’ll return, and we’ll add a new scene for the popover controller, but until then we are just perfect. Let’s keep going by writing some code!
+我们需要在Interface Builder要做的大部分工作现在已经做完了。稍后我们将会返回来，为popover控制器添加一个新的场景，但是，之前，让我们写一些代码！
 
 #### 获取并解析XML数据
 
-One of the first things that we are going to deal with in this tutorial is to download and parse the sample data of the demo application we are developing. As I said to the app overview section, the source of our data will be the RSS feed of the Appcoda website (this website), and it’s our duty to parse that feed and extract only the piece of data we need.
+在这个教程中，我们将要处理的低一个事情，是下载并解析我们开发的示例应用的样本数据。就像我在应用概览一节中所说的，我们的数据源将是Appcoda站点的RSS订阅源，我们的职责是解析订阅源然后获取我们需要的数据部分。
 
-As you (probably) know, three steps are involved when using the NSXMLParser class to parse XML data:
+就像你知道的当使用`NSXMLParser`类解析XML数据时，需要进行三个步骤：
 
-1. Initialize a NSXMLParser object
-2. Specify the source URL and start parsing
-3. Use the NSXMLParser delegate methods to handle the parsed data
+1. 初始化一个NSXMLParser对象
+2. 指定URL源并开始解析
+3. 使用NSXMLParser委托方法以处理解析数据
 
-Let’s see everything step by step. Initially, open the XMLParser.swift file, and adopt the NSXMLParserDelegate protocol. It’s necessary to do that in order to handle the data later. Here it is:
+让我们一步一步来。初始化，打开XMLParser.swift文件，然后引入NSXMLParserDelegate协议。这样做是为了稍后处理数据。如下面所示：
 
 ```
 class XMLParser: NSObject, NSXMLParserDelegate
 ```
 
-I remind you that any protocol that is adopted by a class, must be declared after the parent class (in this case the NSXMLParserDelegate protocol is declared after the NSObject parent class).
+> 类将实现的任何协议都应该在父类后面进行声明。
 
-Now, let’s implement a new function that will be used to perform three things: We’ll initialize a parser object, we’ll set the XMLParser class (self) as its delegate, and finally we’ll start parsing. Translating all that into code gives us the next code segment:
+现在，让我们实现一个新的函数，用于执行三件事情：我们将初始化一个解析对象，我们将设置XMLParser类作为它的代理，最后我们将开始解析。将这些转化为代码，将类似如下所示：
 
 ```swift
 func startParsingWithContentsOfURL(rssURL: NSURL) {
@@ -177,11 +177,11 @@ func startParsingWithContentsOfURL(rssURL: NSURL) {
 }
 ```
 
-Notice that the data source URL is passed as a parameter to the function.
+注意，数据源URL将作为函数的参数。
 
-Right now, the first two steps out of the three I listed before have been implemented. However, that was the “easy” part. The important and a bit more difficult part is coming, where we must implement all the required delegate methods of the NSXMLParserDelegate protocol, and to apply the proper logic so we can extract just the data we need out of the bunch that will be parsed.
+现在，我之前列出的三个步骤中的两个已经实现了。然而，这是容易的部分。下面是重要且难一些的部分，这里我们必须实现所有的NSXMLParserDelegate协议委托方法的需求，然后应用合适的逻辑以便我们可以从解析结果中仅抽取我们需要的数据。
 
-Before we see a sample of the returned XML data, let’s declare (and initialize if needed) some properties. Preferably, go to the top of the class, and add the next properties:
+在我们查看返回XML数据的示例之前，让我们声明一些属性。在类的顶部，添加下面的属性：
 
 ```
 class XMLParser: NSObject, NSXMLParserDelegate {
@@ -199,7 +199,7 @@ class XMLParser: NSObject, NSXMLParserDelegate {
 }
 ```
 
-Here’s what each property exists for:
+下面是每一个属性的目的：
 
 * arrParsedData: This is an array that will contain just the parsed data we care about. Note that each object of this array is going to be a Dictionary of which both the key and the value will be String objects. We’ll see an example of the dictionary contents in a while.
 * currentDataDictionary: This dictionary object will be used to temporarily store the parsed data of interest. After we have all the needed data of a parsed tutorial, we’ll add it to the previously described array.
