@@ -228,11 +228,11 @@ Now that you are aware of the purpose of the above properties, let’s see a sam
  
         <wfw:commentRss>http://www.appcoda.com/self-sizing-cells/feed/</wfw:commentRss>
         <slash:comments>9</slash:comments>
-        <description>In iOS 8, Apple introduces a new feature for UITableView known as Self Sizing Cells. To me, this is seriously one of the most exciting features for the new SDK. Prior to iOS 8, if you want to display dynamic content in table view with variable height, you would need to calculate the row height [&amp;amp;#8230;]
- 
-This article, Understanding Self Sizing Cells and Dynamic Type in iOS 8, was originally published at AppCoda.&amp;lt;br/&amp;gt;
-&amp;lt;br/&amp;gt;
-[[ This is a content summary only. Visit my website for full links, other content, and more! ]]&amp;lt;img src="http://feeds.feedburner.com/~r/appcoda/~4/NBLtJtdCP7Q" height="1" width="1"/&amp;gt;</description><feedburner:origLink>http://www.appcoda.com/self-sizing-cells/</feedburner:origLink></item>
+        <description>In iOS 8, Apple introduces a new feature for UITableView known as Self Sizing Cells. To me, this is seriously one of the most exciting features for the new SDK. Prior to iOS 8, if you want to display dynamic content in table view with variable height, you would need to calculate the row height [&amp;amp;#8230;]This article, Understanding Self Sizing Cells and Dynamic Type in iOS 8, was originally published at AppCoda.&amp;lt;br/&amp;gt;&amp;lt;br/&amp;gt;
+[[ This is a content summary only. Visit my website for full links, other content, and more! ]]&amp;lt;img src="http://feeds.feedburner.com/~r/appcoda/~4/NBLtJtdCP7Q" height="1" width="1"/&amp;gt;
+        </description>
+    <feedburner:origLink>http://www.appcoda.com/self-sizing-cells/</feedburner:origLink>
+</item>
 ```
 
 The nodes we are interested in, are:
@@ -247,7 +247,7 @@ Using the values of the above XML sample, here’s what the currentDataDictionar
 [link: http://feedproxy.google.com/~r/appcoda/~3/NBLtJtdCP7Q/, pubDate: Thu, 04 Sep 2014 17:09:31 +0000, title: Understanding Self Sizing Cells and Dynamic Type in iOS 8]
 ```
 
-With all the above in mind, we can now proceed to the implementation of all the needed delegate methods. Let’s begin with the case where a new element is found. The only action we should take, is to assign the name of the element to the currentlElement property:
+有了上述的一切，我们现在能够处理所有需要的呃委托方法的实现。让我们从一个新元素被发现的情况开始。我们唯一应该做的，是给currentElement属性指定元素名称：
 
 ```swift
 func parser(parser: NSXMLParser, didStartElement elementName: String!, namespaceURI: String!, qualifiedName qName: String!, attributes attributeDict: [NSObject : AnyObject]) {
@@ -256,7 +256,7 @@ func parser(parser: NSXMLParser, didStartElement elementName: String!, namespace
 }
 ```
 
-Now, we must store the contents (the real value) of each node to the foundCharacters property in real time as they’re parsed, as long as the current element is any of interest:
+现在，我们必须存储每个节点的实时内容（实际值）到foundCharacters属性：
 
 ```swift
 func parser(parser: NSXMLParser, foundCharacters string: String!) {
@@ -266,9 +266,9 @@ func parser(parser: NSXMLParser, foundCharacters string: String!) {
 }
 ```
 
-If you look closely, you’ll find out that in the first condition we don’t just check if the current element is the title, but also if its value is other than the “Appcoda” string. I do that on purpose, as the returned XML data contains an element named “title” at the beginning of the XML that is not related to any tutorial topic, and it just has the “Appcoda” value. Anyway, that’s an action related to the specific data we parse.
+如果你仔细观察，你会发现在第一个条件中我们不只是检查当前元素是否是标题，还检查它的值是否是“Appcoda”字符串。我这样做的目的，返回的XML数据在XML开始部分包含名称为“title”的元素，与其他“教程”不同，它只有“appcoda”值。不管怎样，这是一个与特定的数据相关的行为。
 
-Summarizing up to this point, we have managed to temporarily store each parsed element name, and based on that to keep or not the node’s value. Next, we must add the foundCharacters value to the currentDataDictionary once the element closing is found. Moreover, when all the required data has been added to the dictionary, we need to add this dictionary to the arrParsedData array. Let’s see all that in code:
+总结到此，我们已经设法暂时存储每个解析的元素名，并基于此，以保持或不保持节点的值。接下来，我们必须添加foundCharacters值给currentDataDictionary。此外，当所有需要的数据已被添加到词典，我们需要把这个词典给arrParsedData数组。让我们看看所有的代码：
 
 ```swift
 func parser(parser: NSXMLParser, didEndElement elementName: String!, namespaceURI: String!, qualifiedName qName: String!) {
@@ -337,13 +337,12 @@ Our class is almost ready now. What we haven’t done yet, is to implement the d
 
 ```swift
 func parser(parser: NSXMLParser, parseErrorOccurred parseError: NSError!) {
-        println(parseError.description)
-    }
+    println(parseError.description)
+}
  
  
-    func parser(parser: NSXMLParser, validationErrorOccurred validationError: NSError!) {
-        println(validationError.description)
-    }
+func parser(parser: NSXMLParser, validationErrorOccurred validationError: NSError!) {
+    println(validationError.description)
 }
 ```
 
