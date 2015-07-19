@@ -348,9 +348,9 @@ func parser(parser: NSXMLParser, validationErrorOccurred validationError: NSErro
 
 Notice that we didn’t implement the parserDidStartDocument method, simply because we didn’t need to do something in it.
 
-#### Using the Parsed Data
+#### 使用已解析的数据
 
-The mechanism to download and parse data for our demo application is ready, and it would be a good idea to use that data before we move to any other important aspect of the tutorial. As you saw previously, all the data of interest is stored to the arrParsedData array, and that data we are going to populate in the TopicsTableViewController class for starters. So, open the respective file in Xcode (the * TopicsTableViewController.swift* file), and as a first step adopt the XMLParserDelegate protocol (the one we implemented) by declaring it to the class header:
+The mechanism to download and parse data for our demo application is ready, and it would be a good idea to use that data before we move to any other important aspect of the tutorial. As you saw previously, all the data of interest is stored to the arrParsedData array, and that data we are going to populate in the `TopicsTableViewController` class for starters. So, open the respective file in Xcode (the * TopicsTableViewController.swift* file), and as a first step adopt the XMLParserDelegate protocol (the one we implemented) by declaring it to the class header:
 
 ```swift
 class TopicsTableViewController: UITableViewController, XMLParserDelegate {
@@ -501,19 +501,19 @@ All of the above consist of the code we need in both the TopicsTableViewControll
 
 Before we begin the actual work with the split view controller and the rest of the stuff we are about to see, it’s necessary to talk about two new important concepts regarding the adaptive layout. These are the Size Classes and the Trait Collections, and without having the minimum required knowledge about them at least, it’s not possible to carry on. Of course, I recommend you to find more information in the Apple documentation or the respective WWDC videos in addition to what you’ll read here. However, if you are aware of these meanings and you feel comfortable with them, then you may skip this section, otherwise please be patient enough and keep reading.
 
-So, let’s get started with the size classes. A Size Class is something new in iOS 8, and it actually describes the screen size of a device. For every axis (horizontal and vertical) there are two size classes: A Regular and a Compact. A regular size class in both orientations has to do with iPad devices, while the compact size classes always refer to iPhone devices. Speaking completely unofficially and un-technically, one could say that the regular size class indicates that there is “enough room” in a given orientation for specific content, while the compact one signals the exact opposite thing. Of course, that “enough room” phrase is relative and always depends on the content you want to display, and that’s something that you will definitely find out by the end of this tutorial. So, considering that there are two size classes on each axis, there are four size classes in total:
+那么，让我们开始使用`size`类型。`Size`类是在iOS8中新出现的，它实际上描述了设备的屏幕大小。每坐标轴（水平、垂直），有两个size类：`Regular`（常规）和`Compact`（紧凑）。`Regular`尺寸类一般用于iPad设备，`Compact`尺寸类一般用于iPhone设备。完全非官方和非技术的说，一种说法是，`Regular`尺寸类指示出对于特定的内容在一个给定的放向上有“足够的空间”，`Compact`标识完全相反的情况。当然，“足够的空间”一词是相对的，总是取决与与你想要展示的内容，在此教程的最后，你将会明确的找到这些。因此，考虑到在每一个坐标轴上都有两个尺寸类，一共有四个尺寸类：
 
-1. Horizontal regular
-2. Horizontal compact
-3. Vertical regular
-4. Vertical compact
+1. Horizontal regular —— 水平常规
+2. Horizontal compact —— 水平紧凑
+3. Vertical regular —— 垂直常规
+4. Vertical compact —— 垂直紧凑
 
-The combination of the above size classes gives us the screen sizes in various orientations:
+上面尺寸类型的混合告诉我们在不同方向上的屏幕尺寸：
 
-1. Regular (H) x Regular (V) = iPad in all orientations
-2. Compact (H) x Regular (V) = iPhone in Portrait orientation
-3. Regular (H) x Compact (V) = iPhone 6 Plus in Landscape orientation
-4. Compact (H) x Compact (V) = iPhone in Landscape orientation (excl. IPhone 6 Plus)
+1. Regular (H) x Regular (V) = iPad在所有方向上的尺寸
+2. Compact (H) x Regular (V) = iPhone在竖向上的尺寸
+3. Regular (H) x Compact (V) = iPhone 6 Plus在横向上的尺寸
+4. Compact (H) x Compact (V) = iPhone在横向上的尺寸
 
 You can see the size classes in action, if you simply go to Xcode, and open the Interface Builder by clicking on the Main.storyboard file. At the bottom of the main window area, there’s a button writing wAny hAny. If you click on it, a new small window will appear, where you can specify any desired size class combination. At the same time, Xcode informs you about the target device of the currently set combination. The Any value means that the interface configuration will work to any device, no matter of the screen size. An extra benefit from this is that no different .storyboard files are needed for each device type when creating universal applications.
 
@@ -523,27 +523,28 @@ So, as you can understand, we are no longer talking about 3.5 or 4 inch screens 
 
 Let’s say a few things about the trait collections now, but first let’s define what a trait is. Well, a trait is actually a property that describes a certain aspect of a screen. That means that a trait collection is a set of properties describing a specific device, and it contains the exact following traits:
 
-Horizontal size class
-Vertical size class
-Device idiom
-Display scale
+* Horizontal size class
+* Vertical size class
+* Device idiom
+* Display scale
+
 As you notice, the size classes are considered to be traits. Looking at a simple example, the next trait collection:
 
-Compact horizontal size class
-Regular vertical size class
-Device idiom: iPhone
-Display scale: 2.0
-… describes an iPhone in portrait orientation.
+* Compact horizontal size class
+* Regular vertical size class
+* Device idiom: iPhone
+* Display scale: 2.0
+* … describes an iPhone in portrait orientation.
 
 The discussion about traits doesn’t stop here, on the contrary there is a lot more study one should do about it. However, the traits and trait collections are important for us in this tutorial just for one reason: Every view controller inherits the trait collection from its parent, and that inheritance is moving towards up in the hierarchy until the window object of the app. Our goal in the sample app we’re creating is to manage to override the inherited trait collection and to modify the size classes in order to properly display the split view controller when the device orientation gets changed. The new SDK provides some really useful methods do to so, and once you get the meaning of the trait collections you’ll see that overriding them is a super-easy task and in many cases the appropriate way to implement your app.
 
-#### A Custom Container View Controller
+#### 自定义容器视图控制器
 
-Designing a user interface it’s not a simple thing, as that’s the main way for users to communicate with your application. If the user interface is poorly designed the users will probably never use your app more than a few times, no matter if the features it incorporates are the best ones existing out there. And when saying about UI design, I don’t only mean the graphics or the colors of it, but the structural elements that compose the app. So, making the correct decisions and choosing the proper view controllers and subviews in the development stage is vital for the life of the application once it goes live. Speaking more specifically now, it’s quite often for all of us to use special view controllers that work as containers for other, normal view controllers. Typical examples of them provided by the iOS SDK could be the navigation or tab bar view controllers.
+Designing a user interface it’s not a simple thing, as that’s the main way for users to communicate with your application. If the user interface is poorly designed the users will probably never use your app more than a few times, no matter if the features it incorporates are the best ones existing out there. And when saying about UI design, I don’t only mean the graphics or the colors of it, but the structural elements that compose the app. 所以，做正确的决定并选择合适的视图控制器与子视图在开发阶段是对于应用程序的生命周期必不可少的。现在更具体地说，我们大家都很经常使用专用的视图控制器，它可以作为其他的、正常的视图控制器的容器来工作。导航或标签栏视图控制器是由iOS SDK提供的典型的例子。
 
 There is a whole theory behind container view controllers that you should really read at some point here. Besides those pre-made and provided by the SDK container view controllers, developers can also create their own custom container VCs, for which you can also read in the previous given link. There are specific steps that should be followed every time that you implement one, and we’ll see them here pretty soon, but first, allow me to tell you why we need to create a custom container view controller in this application.
 
-As you’ll see yourself while we’re moving forward in this sample project, we won’t be able to properly display the split view controller unless we override the trait collection of its parent view controller. However, the parent of the split view controller is the application window itself (remember the design in the Interface Builder), and we can’t override its trait collections. So, we need a custom container view controller that will work as an intermediate between the window and the split view controller. The split view controller will be embedded to the container, and the container VC will become the root view controller of the window. At the end, the trait collection of that container VC is the one that we’ll override.
+As you’ll see yourself while we’re moving forward in this sample project, we won’t be able to properly display the split view controller unless we override the trait collection of its parent view controller. However, the parent of the split view controller is the application window itself (remember the design in the Interface Builder), and we can’t override its trait collections. 因此，我们需要一个自定义容器视图控制器，该控制器将在窗口和拆分视图控制器中间进行工作。将拆分视图控制器嵌入到容器中，容器将成为窗口的根视图控制器。At the end, the trait collection of that container VC is the one that we’ll override.
 
 Our work with the custom container view controller won’t be limited in this part of the tutorial only. Our initial implementation will take place here, however we’ll do new additions and modifications later on, when we’ll dive in the details of the split view controller.
 
@@ -559,7 +560,7 @@ class ContainerViewController: UIViewController {
 
 In this property we will assign later the split view controller that we have already added in the Interface Builder.
 
-Next, we will implement a function which we will use to assign the split view controller to this viewController object. We can’t just do that directly, because when working with container view controllers there are specific steps that should be followed. These steps are described in detail in the official documentation by Apple (the link I gave you above), but they’re simple enough to be understood. Let’s see that function and then we’ll discuss a bit about it.
+Next, we will implement a function which we will use to assign the split view controller to this viewController object. 我们不能直接这样做，因为在与容器视图控制器工作时，有应该遵循的具体步骤。 These steps are described in detail in the official documentation by Apple (the link I gave you above), but they’re simple enough to be understood. Let’s see that function and then we’ll discuss a bit about it.
 
 ```swift
 func setEmbeddedViewController(splitViewController: UISplitViewController!){
@@ -595,7 +596,7 @@ indicates that the whole process is complete and the new view controller has bee
 
 For the time being our work in this class is over. You might wonder why we declared and used the viewController object, as we didn’t really need it anywhere. I should say in advance that we’ll use it later, and that’s the reason of its existence. Right next, we’ll see how this class can become handy through code, and how it will become the root view controller of the window of our application.
 
-#### The Split View Controller
+#### Split View Controller
 
 The split view controller has already been added to the app through the Interface Builder, but until now we haven’t been able to use it, because we were performing all the preliminary steps for getting the data, configuring the custom container view and implementing the display of the parsed data. Now that all these are ready, we can start “playing around” with the split view controller, and see step by step various ways to set its appearance.
 
