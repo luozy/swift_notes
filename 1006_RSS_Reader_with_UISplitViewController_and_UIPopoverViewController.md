@@ -94,8 +94,6 @@ Further than all the above, it’s well known that iOS 8 not only contains new f
 
 然后，选择列表视图单元原型，然后在`Attributes Inspector`中选择`Basic`样式。同时，设置`idCell`作为它的标识值。下一步，打开`Size Inspector`，并设置`Row Height`为80.
 
-By setting the basic style to the table view cell, a label is appeared on it. Select that label, set the font size to 14pt, and the its Lines to 3.
-
 通过设置表视图单元为`Basic`样式，一个标签显示在表视图中。选择这个标签，设置字号为14pt，以及`Lines`为3.
 
 下面是应该看到的：
@@ -600,7 +598,7 @@ For the time being our work in this class is over. You might wonder why we decla
 
 The split view controller has already been added to the app through the Interface Builder, but until now we haven’t been able to use it, because we were performing all the preliminary steps for getting the data, configuring the custom container view and implementing the display of the parsed data. Now that all these are ready, we can start “playing around” with the split view controller, and see step by step various ways to set its appearance.
 
-The first thing we have to do, is to embed it to the custom container view. As we have no other view controller higher in the VC hierarchy than the container VC, we’ll do this job to the application delegate class. So, open the AppDelegate.swift file, and for starters, declare a property for the split view controller at the top of the class, and also adopt the UISplitViewControllerDelegate protocol:
+我们要做的第一件事是把它嵌入到自定义容器视图中。由于__在视图控制器层次中没有其他的视图控制器比容器的更高__，我们将在应用程序代理类完成这个工作。所以，打开`appdelegate.swift`文件，并首先在类的顶部为Split视图控制器声明一个属性，并采用`UISplitViewControllerDelegate`协议：
 
 ```swift
 class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDelegate {
@@ -614,7 +612,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
 }
 ```
 
-Our next step is to get a split view controller instance from the storyboard and assign it to the above property, and to add it as a child view controller to the custom container view controller. That’s one of the most important tasks we have to do regarding the split VC, but along with it we’ll also do two more things: We’ll set the AppDelegate instance as the delegate of the split VC, and we’ll set the preferred display mode property, so as to set a value other than the predefined one. Let’s see all these in code:
+我们的下一步是从故事板取得一个拆分视图控制器实例并将它分配给上述属性，并把它作为子视图控制器添加到自定义容器视图控制器。这是已经做过的有关Split视图控制器的工作中最重要的任务之一，但是我们也会做另外两件事：我们会设置`AppDelegate`的实例作为Split视图控制器的委托，我们将设置`优先显示模式`属性。让我们看看所有的代码：
 
 ```swift
 func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
@@ -674,8 +672,7 @@ The setOverrideTraitCollection method is a quite important one, and if you’re 
 
 I believe that is now clear why we used a custom container view controller, and how handy it can be in cases such like this, where we needed to override its trait collection.
 
-Managing the Split View Display
-As you saw, embedding the split view controller to the container view controller, and then overriding the trait collection of the latter wasn’t too hard eventually, and results to the split view controller appearance as shown to the above screenshots. However, in portrait orientation splitting the children view controllers might not be so useful, and that might not be a problem to an iPhone 6 Plus device, but what about the older ones with smaller screen sizes?
+管理拆分视图显示正如你所见，嵌入拆分视图控制器到容器视图控制器，and then overriding the trait collection of the latter wasn’t too hard eventually, 结果是split视图控制器将会像上面的截图那样显示。然而，在纵向上的子视图控制器可能不那么有用，并且对于一个iPhone 6 Plus设备也不会是一个问题，但是对于更小的屏幕尺寸发生了什么？
 
 So, it’s obvious that we should manage the split view in a more refined way, by making it show both of the children view controllers when being in landscape mode. In portrait, we’ll let it use the default behavior, the navigation controller. All that will be achieved by performing a few additions and modifications to the current code.
 
