@@ -87,21 +87,21 @@ Facebook的Paper应用同样引入了漂亮的动画来添加这个应用的整�
 
 ### 示例
 
-We’ll now look at a few examples that use some of the above API calls to animate views in the given starter project.
+我们现在查看几个示例，这些示例使用上面API的一部分，来在已经给出的起始项目中催动视图。
 
-#### Example I
+#### 示例 I
 
-If you run the project, you’ll see a table view that lists the examples we’ll work through. Select Example I in the list and you should see a Login screen of an app with the username and password fields and login button.
+如果你运行这个项目，你讲看到一个表格视图，这个视图罗列我们将使用的示例。在清单中选择Example I，然后你讲看到一个app的登录界面，这个界面包含用户名、密码以及登录按钮。
 
-We want these to be animated onto the screen when the app starts.
+我们想要实现在app启动的时候这些元素可以以动画的形式进入到屏幕中。
 
-To get started we’ll hide the views from sight when the view first appears. Before Auto Layout, this would have been a simple matter of changing the specific view’s position in code, but since we set auto layout constraints on the views in the storyboard file, we’ll have to change the constraints in code, which will change the view’s position.
+开始，当视图第一次出现时，我们将会隐藏视图。在有`Auto Layout`之前，在代码中修改特定视图的位置将会有一些小麻烦，但是自从我们可以在故事版中设置视图的自动布局约束，我们将可以在代码中修改约束，来改变视图的位置。
 
-First, we need to get a reference of the constraints that we will change. Open the storyboard file. Locate the following constraints in the Example I Scene.
+首先，我们需要取得将要改变的约束的参考。打开故事板文件。在Example I场景中定位下面约束。
 
 ![](imgs/1007_Demo3.png)
 
-Open the Assistant Editor, and make sure it is the ExampleIViewController.swift that appears next to the storyboard on the split screen. Drag from the Center X Alignment – View – Username constraint to the ExampleIViewController class. Create an outlet named centerAlignUsername. Do the same for the Center X Alignment – View – Password and set its name to centerAlignPassword. Also create an outlet for the login button named loginButton and an action for the same button and name it login. Make sure you set the Type of the action to UIButton. You should have the following in code.
+打开Assistant Editor，然后确认它是`ExampleViewController.swift`，接下来在出现在分屏上的故事版。从__Center X Alignment – View – Username__约束拖拽到`ExampleViewController`类。创建一个教`centerAlignUsername`的outlet。对__Center X Alignment – View – Password__做同样的事情，并设置它的名字为`centerAlignPassword`。同事，为登陆按钮创建一个名为`loginButton`的outlet，以及为这个按钮创建一个名为`login`的动作（action)。确认你设置动作的类型为`UIButton`。你讲得到如下的代码。
 
 ```swift
 @IBOutlet weak var centerAlignUsername: NSLayoutConstraint!
@@ -113,7 +113,7 @@ Open the Assistant Editor, and make sure it is the ExampleIViewController.swift 
 }
 ```
 
-In the ExampleIViewController.swift add the following method which is called before the view is presented on screen.
+在`ExampleIViewController.swift`中，添加下面的方法，在试图在屏幕上呈现之前，这个方法将被调用。
 
 ```swift
 override func viewWillAppear(animated: Bool) {
@@ -124,9 +124,9 @@ override func viewWillAppear(animated: Bool) {
 }
 ```
 
-This moves the username and password fields just out of view and sets the alpha value of the button to 0 which makes it invisible.
+这个方法移动__username__以及__password__字段到视图外以及设置按钮的透明度为0使其不可见。
 
-Add the following method which is called right when the view appears.
+添加下面的方法，这个方法在视图出现的时候被调用。
 
 ```swift
 override func viewDidAppear(animated: Bool) {
@@ -142,15 +142,15 @@ override func viewDidAppear(animated: Bool) {
 }
 ```
 
-Here we use the UIView.animateWithDuration() method that we saw earlier. We include the UIViewAnimationOptions.CurveEaseOut option which makes the animation start fast then slow down at the end. You can experiment with different options here. Command-click on UIViewAnimationOptions to see all the options available.
+这里我们使用我们之前看到的`UIView.animateWithDuration()`方法。我们包含`UIViewAnimationOptions.CurveEaseOut`选项，这个选项使得动画开始的时候快，结束的时候慢。你可以实验不同的选项。使用__Command + 单击__`UIViewAnimationOptions`来查看所有可用的选项。
 
-The animation lasts for 0.5 seconds and starts immediately. You have liberty over the duration, but you shouldn’t set such a large number as to annoy your users when animations on your app seem to take too long. Normally, the duration is set between 0.5 and 0.7 seconds, but as I said, this isn’t set in stone and you have liberty to set it to whatever feels right to you.
+动画持续0.5秒，并立即开始。你有自由的时间，但你不应该设置这样一个大的数目，在你的用户在你的应用程序动画时使用这么长的时间来惹恼你的用户。一般来说，持续时间是0.5到0.7秒，但正如我所说，这不是一成不变的，你有自由设定它的任何感觉对你。
 
-The animation does the exact opposite of what we did in viewWillAppear(). layoutIfNeeded() is used to lay out the views immediately they are changed. If you don’t include it, you will not see them get animated onto the screen, instead they will just be shown in their final position. Run the app, and you should see the following.
+动画与我们在viewwillappear()所做的正好相反。layoutifneeded()被用于布局视图。如果你不包括它，你就不会看到屏幕上的动画，相反，他们将只会显示在他们的最后位置。运行该应用程序，你应该看到以下。
 
 ![](imgs/1007_Demo4.gif)
 
-The above looks more interesting than a static presentation, but the views getting animated at the same time, doesn’t create that great an effect. Modify the method as shown below.
+上面的效果看起来比一个静态的呈现更加的有意思，但是视图在同一时间进行动画，没有达到很棒的效果。像下面那样修改函数。
 
 ```swift
 override func viewDidAppear(animated: Bool) {
@@ -173,11 +173,11 @@ override func viewDidAppear(animated: Bool) {
 }
 ```
 
-Run the app and the resulting animation has the views animating on screen at different times. Looking at the code, you can see that after the first animation block, we set a delay on subsequent ones.
+运行应用，然后视图将会在不同的时间执行动画。查看代码，你讲看到在第一个动画代码块之后，我们设置了延迟。
 
 ![](imgs/1007_Demo5.gif)
 
-In login screens, when login fails, there is usually an animation that indicates to the user that login has failed. This is sometimes done as a shake of the text fields or the login button, and a message that lets the user know that login has failed. We’ll add such an effect on the login button using springs. Modify the login() function as shown.
+在登录屏幕，当登录失败时，通常会有一个动画显示用户登录失败。这有时是颤动一个文本字段或登录按钮，一个消息，让用户知道登录失败了。我们给登录按钮添加弹性效果。修改`login()`功能如图所示。
 
 ```swift
 @IBAction func login(sender: UIButton) {
@@ -191,11 +191,11 @@ In login screens, when login fails, there is usually an animation that indicates
 }
 ```
 
-The above changes the size of the login button when pressed and animates the action with a spring animation which will cause the button’s width to expand and bounce a little at the end before settling.
+上面的函数改变当按钮被按时登录按钮的尺寸，以及使用弹性效果来进行动画，弹性动画将引起按钮的宽度扩大以及弹小在结束之前。
 
 ![](imgs/1007_Demo6.gif)
 
-Play around with the damping value. If you set it to 1, the button will expand, with no bouncing at the end. You can also use the same method on the username and password fields. Instead of having them come onto the screen and just stop in place at the end, have them be spring-like and bounce a little before settling down.
+尝试调整阻尼值。如果你设置它为1，按钮将会扩大，在结束时不会有弹性。你还可以使用同样的方法给用户名和密码字段。Instead of having them come onto the screen and just stop in place at the end, have them be spring-like and bounce a little before settling down.
 
 #### Example II
 
