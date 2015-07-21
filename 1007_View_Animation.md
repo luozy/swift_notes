@@ -386,7 +386,7 @@ Here, when the view appears, the animateTable() function is called. We reload th
 
 Run the app and you should see the following.
 
-![](imags/1007_Demo10.gif)
+![](imgs/1007_Demo10.gif)
 
 #### Conclusion
 
