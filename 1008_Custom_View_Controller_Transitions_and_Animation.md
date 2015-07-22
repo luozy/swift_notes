@@ -7,27 +7,27 @@ iOS 7 introduced custom view controller transitions which make it possible for d
 
 ![](imgs/1008_Demo1.jpg)
 
-#### Getting Started
+#### 开始
 
-To create custom transitions you have to follow three steps:
+要创建定制切换效果，你需要做如下的事情：
 
-* Create a class that implements the UIViewControllerAnimatedTransitioning protocol. Here you will write code that performs the animation. This class is referred to as the animation controller.
-* Before presenting a view controller, set a class as its transitioning delegate. The delegate will get a callback for the animation controller to be used when presenting the view controller.
-* Implement the callback method to return an instance of the animation controller from the first step.
+* 创建一个类来实现`UIViewControllerAnimatedTransitioning`协议。这里你讲编写代码来执行动画。这个类与动画控制器相关联。
+* 在呈现一个视图控制器之前，设置一个类作为它的切换效果委托。这个委托将为动画控制器获取一个回调方法，这个回调方法用于视图控制器的呈现。
+* 实现回调方法来返回一个在第一步创建的动画控制器的实例。
 
-Run the starter project and you will be presented with a table view of a list of items. There is an Action button on the navigation bar and when you tap it you’ll be presented with another view that appears in the usual modal style of sliding up from the bottom. We will write a custom transition for this view.
+运行起始项目，你讲看到一个带有项目清单的表格视图。有一个动作按钮在导航栏上，并且当你点击它的时候，将看到另一个视图，这个视图将使用通用的Modal样式从底部滑出。我们将为这个视图定制一个切换效果。
 
 ![](imgs/1008_Demo6.gif)
 
-#### Custom Present Transition
+#### 定制呈现切换效果
 
-The first thing to do as stated previously, is to create the animation controller. Create a new class called CustomPresentAnimationController and make it a subclass of NSObject. Change its declaration as shown.
+像之前提到的，要做的第一件事情是创建动画控制器。创建一个叫`CustomPresentAnimationController`的类，并且让它成为`NSObject`的子类。改变它的生命如下所示。
 
 ```swift
 class CustomPresentAnimationController: NSObject, UIViewControllerAnimatedTransitioning {
 ```
 
-UIViewControllerAnimatedTransitioning protocol has two required methods which we’ll add next. Add the following methods to the class.
+`UIViewControllerAnimatedTransitioning`协议有两个必须实现的方法，添加下面的方法到类。
 
 ```swift
 func transitionDuration(transitionContext: UIViewControllerContextTransitioning) -> NSTimeInterval {
@@ -38,9 +38,12 @@ func animateTransition(transitionContext: UIViewControllerContextTransitioning) 
         
     let fromViewController = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey)!
     let toViewController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)!
+
     let finalFrameForVC = transitionContext.finalFrameForViewController(toViewController)
+
     let containerView = transitionContext.containerView()
     let bounds = UIScreen.mainScreen().bounds
+
     toViewController.view.frame = CGRectOffset(finalFrameForVC, 0, bounds.size.height)
     containerView.addSubview(toViewController.view)
         
@@ -55,11 +58,12 @@ func animateTransition(transitionContext: UIViewControllerContextTransitioning) 
 }
 ```
 
-The first method specifies the length of the transition animation. For the demo app we’ve set it at 2.5 seconds, but you probably should set it to a smaller number in a real app.
+第一个方法制定切换动画的持续时间。对于示例APP来说，我们设置2.5秒，但是你或许应该在一个真实的应用中设置一个更小的数值。
 
-In the second method we use the transitionContext to get the view controller we are navigating from, to, the final frame the transition context should have after the animation completes and the container view which houses the views corresponding to the to and from view controllers.
+在第二个方法中，我们使用`transitionContext`来获取原视图控制器、目标控制器，切换上下文在动画完成后应该有的最终框体和包裹原视图和目标视图的容器视图。
 
-We then position the to view just below the bottom of the screen. Then we add the to view to the container view and in the animate closure, we animate the to view by setting its final frame to the location given by the transition context. We also animate the from view‘s alpha value so that as the to view is sliding up the screen over the from view, the from view will be faded out. The duration of the animation used is the one set in transitionDuration(transitionContext:). In the completion closure, we notify the transition context when the animation completes and then change the from view‘s alpha back to normal. The framework will then remove the from view from the container.
+我们放置目标视图在屏幕的底部。然后我们添加目标视图给容器视图，并且在动画闭包中，我们通过设置它的最终框体来催动目标视图到切换上下文给定的位置。我们也催动原视图的透明值，以便当视图向上画出时，原视图将消褪。
+The duration of the animation used is the one set in transitionDuration(transitionContext:). In the completion closure, we notify the transition context when the animation completes and then change the from view‘s alpha back to normal. The framework will then remove the from view from the container.
 
 With the animation controller completed, we need to link it to a storyboard segue.
 
