@@ -320,7 +320,7 @@ Then add the following to the class.
 
 ```swift
 func navigationController(navigationController: UINavigationController, animationControllerForOperation operation: UINavigationControllerOperation, fromViewController fromVC: UIViewController, toViewController toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-    cusomNavigationAnimationController.reverse = operation == .Pop
+    customNavigationAnimationController.reverse = operation == .Pop
     return customNavigationAnimationController
 }
 ```
