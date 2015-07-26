@@ -2,6 +2,11 @@
 
 此项目开始于`2015-06-17`，用于记录我学习iOS应用开发过程中的各种知识。
 
+## 目录
+
+* [Core Data 学习笔记（一）框架简介](http://my.oschina.net/skyler/blog/483895)
+* [Core Data 学习笔记（二）被管理对象模型](http://my.oschina.net/skyler/blog/483906)
+
 # 说明
 
 Commit格式："yyyy-mm-dd hh:mm"

@@ -3,7 +3,7 @@ Core Data 学习笔记（二）被管理对象模型
 
 ## 三、被管理对象模型
 
-CoreData的大多数功能依赖于你创建的用于描述实体、实体属性以及实体间关系的Schema。Schema被表述为一个[被管理对象模型（NSManagedObjectModel）]()实例对象。通常，这个实例对象越丰富，CoreData对你应用程序的支持越好。
+CoreData的大多数功能依赖于你创建的用于描述实体、实体属性以及实体间关系的Schema。Schema被表述为一个[被管理对象模型（NSManagedObjectModel）](https://developer.apple.com/library/prerelease/watchos/documentation/Cocoa/Reference/CoreDataFramework/Classes/NSManagedObjectModel_Class/)实例对象。通常，这个实例对象越丰富，CoreData对你应用程序的支持越好。
 
 ### 3.1 被管理对象模型特点
 
@@ -16,7 +16,7 @@ CoreData的大多数功能依赖于你创建的用于描述实体、实体属性
 
 #### 3.1.1 实体（Entities）
 
-一个模型包含[`NSEntityDescription`]()对象，该对象用于描述一个实体的名称，以及在运行时被使用来表达这个类的实体的名称。一个`NSEntityDescription`对象还可能包含[`NSAttributeDescription`]()以及[`NSRelationshipDescription`]()两个对象。数据实体可能还包含由[`NSFetchedPropertyDescription`]()类的实例来表达的可提取属性。模型还可能有提取请求模板，由[`NSFetchRequest`]()的实例来表达。
+一个模型包含[`NSEntityDescription`](https://developer.apple.com/library/prerelease/watchos/documentation/Cocoa/Reference/CoreDataFramework/Classes/NSEntityDescription_Class/)对象，该对象用于描述一个实体的名称，以及在运行时被使用来表达这个类的实体的名称。一个`NSEntityDescription`对象还可能包含[`NSAttributeDescription`](https://developer.apple.com/library/prerelease/watchos/documentation/Cocoa/Reference/CoreDataFramework/Classes/NSAttributeDescription_Class/)以及[`NSRelationshipDescription`](https://developer.apple.com/library/prerelease/watchos/documentation/Cocoa/Reference/CoreDataFramework/Classes/NSRelationshipDescription_Class/)两个对象。数据实体可能还包含由[`NSFetchedPropertyDescription`](https://developer.apple.com/library/prerelease/watchos/documentation/Cocoa/Reference/CoreDataFramework/Classes/NSFetchedPropertyDescription_Class/)类的实例来表达的可提取属性。模型还可能有提取请求模板，由[`NSFetchRequest`](https://developer.apple.com/library/prerelease/watchos/documentation/Cocoa/Reference/CoreDataFramework/Classes/NSFetchRequest_Class/)的实例来表达。
 
 > 注意：
 >
@@ -42,7 +42,7 @@ __抽象实体__
 
 __实体属性__
 
-CoreData原生支持多种属性类型，如字符串、日期、整型。如果你想要使用原生没有的类型作为实体属性的类型，可以使用在[Non-Standard Persistent Attributes]()中描述的几种方法。
+CoreData原生支持多种属性类型，如字符串、日期、整型。如果你想要使用原生没有的类型作为实体属性的类型，可以使用在[Non-Standard Persistent Attributes](https://developer.apple.com/library/ios/documentation/Cocoa/Conceptual/CoreData/)中描述的几种方法。
 
 可以设置属性为`optional`的，这样就可以不为实体的这个属性赋值，也就是说，这个属性是非必须的。
 
@@ -52,11 +52,11 @@ CoreData原生支持多种属性类型，如字符串、日期、整型。如果
 
 __实体关系__
 
-CoreData支持“1对N”、“1对1”关系。可以指定实体间关系是否为“必填”和“基数”，以及关联实体间的删除方式。关于实体间关系的更多细节，可以参考[Relationships and Fetched Properties]()。
+CoreData支持“1对N”、“1对1”关系。可以指定实体间关系是否为“必填”和“基数”，以及关联实体间的删除方式。关于实体间关系的更多细节，可以参考[Relationships and Fetched Properties](https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/CoreData/)。
 
 #### 3.1.3 提取模板
 
-使用[`NSFetchRequest`]()类来描述从持久化数据存储中提取数据的请求。可以在一个被管理对象模型中预定义数据提取请求，这样你可以预定义按需对模型进行检索的查询。关于提取模板的更多的细节可以参见[Accessing and Using a Managed Object Model at Runtime]()。
+使用[`NSFetchRequest`](https://developer.apple.com/library/prerelease/watchos/documentation/Cocoa/Reference/CoreDataFramework/Classes/NSFetchRequest_Class/)类来描述从持久化数据存储中提取数据的请求。可以在一个被管理对象模型中预定义数据提取请求，这样你可以预定义按需对模型进行检索的查询。关于提取模板的更多的细节可以参见[Accessing and Using a Managed Object Model at Runtime](https://developer.apple.com/library/ios/documentation/Cocoa/Conceptual/CoreData/Articles/cdUsingMOM.html#//apple_ref/doc/uid/TP40005190-SW7)。
 
 #### 3.1.4 用户信息模板
 
@@ -76,9 +76,29 @@ CoreData支持“1对N”、“1对1”关系。可以指定实体间关系是�
 
 ## 四、被管理对象模型的使用
 
+### 4.1 创建和加载一个被管理对象模型
 
+#### 4.1.1 编译一个数据模型
+
+#### 4.1.2 加载一个数据模型
+
+#### 4.1.3 如果你的项目包含一个以上的模型，将可能出现的问题
+
+### 4.2 发型模式（Schema）使得一个模型与旧的存储冲突
+
+### 4.3 在运行时访问和使用一个被管理对象模型
+
+#### 4.3.1 编程实现提取请求模板
+
+#### 4.3.2 访问提取请求模板
+
+### 4.4 本地化一个被管理对象模型
+
+#### 4.4.1 字符串文件
+
+#### 4.4.2 编程实现设置一个本地化字典
 
 ## 参考
 
-* [Managed Object Models]()
-* [Using a Managed Object Model]()
+* [Managed Object Models](https://developer.apple.com/library/prerelease/ios/documentation/DataManagement/Devpedia-CoreData/)
+* [Using a Managed Object Model](https://developer.apple.com/library/ios/documentation/Cocoa/Conceptual/CoreData/)
