@@ -49,7 +49,7 @@ Core Data框架是用来管理数据在iOS应用当中的持久化操作的一�
 
 #### 2.1.2 “数据提取”请求
 
-为了使用持久化上下文从数据库中提取数据，需要创建一个[数据提取请求对象（NSFetchRequest）]()，数据提取请求对象用于描述你需要从数据库中提取怎样的数据出来，类似于其他ORM框架的查询条件。数据提取请求对象包含三个部分：想要操作的被管理实体对象名称，[条件格式字符串（NSPredicate）]()，条件数组（键值对）。如下图所示：
+为了使用持久化上下文从数据库中提取数据，需要创建一个[数据提取请求对象（NSFetchRequest）](https://developer.apple.com/library/prerelease/watchos/documentation/Cocoa/Reference/CoreDataFramework/Classes/NSFetchRequest_Class/)，数据提取请求对象用于描述你需要从数据库中提取怎样的数据出来，类似于其他ORM框架的查询条件。数据提取请求对象包含三个部分：想要操作的被管理实体对象名称，[条件格式字符串（NSPredicate）]()，条件数组（键值对）。如下图所示：
 
 ![](imgs/2001_Demo2_Small.png)
 
@@ -73,7 +73,7 @@ Core Data框架是用来管理数据在iOS应用当中的持久化操作的一�
 
 ### 2.2 被管理对象与被管理对象模型
 
-[被管理对象模型（NSManagedObjectModel）]()提供用于描述[被管理对象（NSManagedObject）]()纲要（Schema）。一般被管理对象模型可以使用"Xcode Data Model Design"工具创建。
+[被管理对象模型（NSManagedObjectModel）](https://developer.apple.com/library/prerelease/watchos/documentation/Cocoa/Reference/CoreDataFramework/Classes/NSManagedObjectModel_Class/)提供用于描述[被管理对象（NSManagedObject）]()纲要（Schema）。一般被管理对象模型可以使用"Xcode Data Model Design"工具创建。
 
 被管理对象模型是一个实体描述对象的集合，每一个实体描述对象都是一个关于实体的元数据，包括实体名称、在应用中使用的实体名称（类实例变量/常量名）、实体属性以及实体与其他实体的关系。如下图所示：
 
@@ -92,7 +92,6 @@ Core Data框架是用来管理数据在iOS应用当中的持久化操作的一�
 * [Core Data Programming Guide](https://developer.apple.com/library/ios/documentation/Cocoa/Conceptual/CoreData/cdProgrammingGuide.html) 
 * [Technology Overview]()
 * [Core Data Basics]()
-* [Predicate Format String Syntax](https://developer.apple.com/library/prerelease/ios/documentation/Cocoa/Conceptual/Predicates/)
 
 ### 网摘文章
 

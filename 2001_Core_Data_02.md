@@ -78,27 +78,178 @@ CoreData支持“1对N”、“1对1”关系。可以指定实体间关系是�
 
 ### 4.1 创建和加载一个被管理对象模型
 
+我们可以使用Xcode自带的CoreData模型工具来创建被管理对象，也可以完全是使用编程的方式来实现模型的定制。
+
 #### 4.1.1 编译一个数据模型
+
+使用Xcode工具创建的被管理对象模型有很多在运行时不需要的信息。我们可以使用`momc [source] [destination]`来编译被管理对象模型文件（.xcdatamodel），编译成用于部署的`mom`文件。
 
 #### 4.1.2 加载一个数据模型
 
+如果使用Xcode创建一个使用CoreData的非文档型应用程序，应用程序委托包含了检索数据模型的代码。模型的名称（模型文件的名称）在运行时是不被强制关联的，所以，一旦数据模型被CoreData加载后，文件名就无关仅要了且也不会被使用了。所以，可以使用任意的名称来命名模型文件。
+
+在创建项目的时候，如果勾选了`Use Core Data`，则在`AppDelegate`文件中，将会有如下代码自动生成：
+
+```swift
+// MARK: - Core Data stack
+
+lazy var applicationDocumentsDirectory: NSURL = {
+    // The directory the application uses to store the Core Data store file. This code uses a directory named "com.46day.CoreDataUsing" in the application's documents Application Support directory.
+    let urls = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)
+    return urls[urls.count-1] as! NSURL
+}()
+
+lazy var managedObjectModel: NSManagedObjectModel = {
+    // The managed object model for the application. This property is not optional. It is a fatal error for the application not to be able to find and load its model.
+    let modelURL = NSBundle.mainBundle().URLForResource("CoreDataUsing", withExtension: "momd")!
+    return NSManagedObjectModel(contentsOfURL: modelURL)!
+}()
+
+lazy var persistentStoreCoordinator: NSPersistentStoreCoordinator? = {
+    // The persistent store coordinator for the application. This implementation creates and return a coordinator, having added the store for the application to it. This property is optional since there are legitimate error conditions that could cause the creation of the store to fail.
+    // Create the coordinator and store
+    var coordinator: NSPersistentStoreCoordinator? = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
+    let url = self.applicationDocumentsDirectory.URLByAppendingPathComponent("CoreDataUsing.sqlite")
+    var error: NSError? = nil
+    var failureReason = "There was an error creating or loading the application's saved data."
+    if coordinator!.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: url, options: nil, error: &error) == nil {
+        coordinator = nil
+        // Report any error we got.
+        var dict = [String: AnyObject]()
+        dict[NSLocalizedDescriptionKey] = "Failed to initialize the application's saved data"
+        dict[NSLocalizedFailureReasonErrorKey] = failureReason
+        dict[NSUnderlyingErrorKey] = error
+        error = NSError(domain: "YOUR_ERROR_DOMAIN", code: 9999, userInfo: dict)
+        // Replace this with code to handle the error appropriately.
+        // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+        NSLog("Unresolved error \(error), \(error!.userInfo)")
+        abort()
+    }
+    
+    return coordinator
+}()
+
+lazy var managedObjectContext: NSManagedObjectContext? = {
+    // Returns the managed object context for the application (which is already bound to the persistent store coordinator for the application.) This property is optional since there are legitimate error conditions that could cause the creation of the context to fail.
+    let coordinator = self.persistentStoreCoordinator
+    if coordinator == nil {
+        return nil
+    }
+    var managedObjectContext = NSManagedObjectContext()
+    managedObjectContext.persistentStoreCoordinator = coordinator
+    return managedObjectContext
+}()
+
+// MARK: - Core Data Saving support
+
+func saveContext () {
+    if let moc = self.managedObjectContext {
+        var error: NSError? = nil
+        if moc.hasChanges && !moc.save(&error) {
+            // Replace this implementation with code to handle the error appropriately.
+            // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+            NSLog("Unresolved error \(error), \(error!.userInfo)")
+            abort()
+        }
+    }
+}
+```
+
+通常情况下，我们不需要去修改这些自动生成的，用于处理被管理数据模型的操作。简要说明如下。
+
+* `applicationDocumentsDirectory` - 标识应用程序存储数据文件的路径
+* `managedObjectModel` - 在应用程序中使用的被管理对象模型
+* `persistentStoreCoordinator` - 在应用程序中使用的持久化存储协调器
+* `managedObjectContext` - 在应用程序中使用的被管理对象上下文
+* `saveContext` - 用于CoreData保存持久化数据，我们可以在此方法中添加一些错误处理的操作
+
+如果想要自己__手动加载__数据模型文件，可以使用下面两种机制：
+
+* 使用`init?(contentsOfURL url: NSURL)`实例方法从一个指定的URL中加载。
+* 使用`mergedModelFromBundles`类方法来从一个制定的Bundle集合中创建一个数据模型。
+
+> 注意：
+>
+> * 一般来说，在一个应用程序中，使用一个模型文件就足够了。但是，仍然可以通过使用多个URL来加载多个模型文件，然后在使用这些模型实例化协调器前，使用`modelByMergingModels`来合并它们。
+
 #### 4.1.3 如果你的项目包含一个以上的模型，将可能出现的问题
 
-### 4.2 发型模式（Schema）使得一个模型与旧的存储冲突
+当我们使用`mergedModelFromBundles`来手动合并多个数据模型文件时，有是会因为多个文件的版本等问题而产生一些异常错误。
+
+* 如果仅仅是数据模型文件被重命名，CoreData将会尝试合并现在的以及旧版本的文件，这可能会引起如下错误。
+
+`reason = "'Can't merge models with two different entities named 'EntityName''";`
+
+* 如果创建一个包含来自原始模型中不同实体的模型，CoreData将合并新的和旧的到一起。而如果你已经存储过一些数据，可能会引起如下错误。
+
+`reason = "The model used to open the store is incompatible with the one used to create the store";`
+
+针对以上异常，提出如下的解决的方法：
+
+* 在运行程序之前，清空之前编译的旧的产品文件。
+* 使用`init?(contentsOfURL url: NSURL)`替代使用`mergedModelFromBundles`
+
+### 4.2 修改模式（Schema）使得一个模型与旧的存储冲突
+
+因为模型用于描述数据存储的数据结构，所以修改模型的任意一个部分都将修改模式（Schema），从而引起与之前创建的模型的冲突。如果修改了模式，那么就需要将旧的数据迁移到新的数据存储当中，参考（[Core Data Model Versioning and Data Migration Programming Guide](http://developer.apple.com/library/ios/documentation/Cocoa/Conceptual/CoreDataVersioning/Articles/Introduction.html)）。
+
+> 注意：
+> 
+> 如果想要修改模型，但是还想要保留打开之前创建的旧版本模型的能力，则_必须保留旧版本模型_。CoreData无法打开不兼容的数据模型，所以，如果想要修改数据模型，但是还要保证能够打开已经存在的数据存储，需要做到：
+> 
+> * 设置模型版本
+> * 在编辑模式之前，给当前模型创建一个新的版本
+> * 编辑模型的新版本，保持模型的就版本不变。
 
 ### 4.3 在运行时访问和使用一个被管理对象模型
 
+可以使用如下方式在运行时得到被管理对象模型，以便使用这个模型。
+
+* 从被管理对象上下文取得被管理对象模型
+
+`let model = self.managedObjectContext?.persistentStoreCoordinator?.managedObjectModel`
+
+* 从被管理对象实体取得被管理对象模型
+
+`let model = managedObject.entity.managedObjectModel`
+
 #### 4.3.1 编程实现提取请求模板
+
+首先，我们需要取得当前使用的数据模型。然后，创建请求以及请求所使用的查询字符串。最后，使用`setFetchRequestTemplate`方法将请求加入到模型型当中。
+
+```swift
+let model = self.managedObjectContext?.persistentStoreCoordinator?.managedObjectModel
+
+var requestTemplate = NSFetchRequest(entityName: "User")
+var predicateTemplate = NSPredicate(format: "name like aaron", argumentArray: nil)
+requestTemplate.predicate = predicateTemplate
+
+model?.setFetchRequestTemplate(requestTemplate, forName: "UserNameLikeAaron")
+```
 
 #### 4.3.2 访问提取请求模板
 
-### 4.4 本地化一个被管理对象模型
+在访问提取请求模板时，传入的参数必须包含在请求模板当中所使用到的所有实体的键值。如果想要测试`NULL`，则需要传入`nil`类型对象。具体参考[Predicate Format String Syntax](https://developer.apple.com/library/prerelease/ios/documentation/Cocoa/Conceptual/Predicates/)。
 
-#### 4.4.1 字符串文件
+```swift
+let model = self.managedObjectContext?.persistentStoreCoordinator?.managedObjectModel
 
-#### 4.4.2 编程实现设置一个本地化字典
+var request = model?.fetchRequestTemplateForName("UserNameLikeAaron")
+var results = self.managedObjectContext?.executeFetchRequest(request!, error: nil)
+```
+
+> 注意：
+>
+> 如果请求模板的查询条件当中，没有参数的需要，则在访问请求模板时，必须做到：
+> 
+> * 使用`fetchRequestFromTemplateWithName:substitutionVariables`，然后传入`nil`作为参数。
+> * 或者，使用`fetchRequestTemplateForName`，然后`copy`结果。
 
 ## 参考
 
 * [Managed Object Models](https://developer.apple.com/library/prerelease/ios/documentation/DataManagement/Devpedia-CoreData/)
 * [Using a Managed Object Model](https://developer.apple.com/library/ios/documentation/Cocoa/Conceptual/CoreData/)
+* [Core Data Model Editor Help](https://developer.apple.com/library/etc/redirect/xcode/ios/1048/recipes/xcode_help-core_data_modeling_tool/_index.html#//apple_ref/doc/uid/TP40010379)
+* [Core Data Model Versioning and Data Migration Programming Guide](http://developer.apple.com/library/ios/documentation/Cocoa/Conceptual/CoreDataVersioning/Articles/Introduction.html)
+* [create a new version of the current model](https://developer.apple.com/library/prerelease/ios/recipes/xcode_help-core_data_modeling_tool/Articles/creating_new_version.html#//apple_ref/doc/uid/TP40010379-CH8)
+* [Predicate Format String Syntax](https://developer.apple.com/library/prerelease/ios/documentation/Cocoa/Conceptual/Predicates/)
