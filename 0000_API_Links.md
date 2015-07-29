@@ -8,6 +8,7 @@
 [Managed Object Models](https://developer.apple.com/library/prerelease/ios/documentation/DataManagement/Devpedia-CoreData/)
 [Using a Managed Object Model](https://developer.apple.com/library/ios/documentation/Cocoa/Conceptual/CoreData/)
 [Core Data Model Editor Help](https://developer.apple.com/library/etc/redirect/xcode/ios/1048/recipes/xcode_help-core_data_modeling_tool/_index.html#//apple_ref/doc/uid/TP40010379)
+[Large Data Objects(BLOBs)](https://developer.apple.com/library/prerelease/ios/documentation/Cocoa/Conceptual/CoreData/Performance.html#//apple_ref/doc/uid/TP40001075-CH25-SW11)
 
 ## API
 
@@ -15,6 +16,7 @@
 [`NSEntityDescription`](https://developer.apple.com/library/prerelease/watchos/documentation/Cocoa/Reference/CoreDataFramework/Classes/NSEntityDescription_Class/)
 [`NSFetchRequest`](https://developer.apple.com/library/prerelease/watchos/documentation/Cocoa/Reference/CoreDataFramework/Classes/NSFetchRequest_Class/)
 [`NSFetchedPropertyDescription`](https://developer.apple.com/library/prerelease/watchos/documentation/Cocoa/Reference/CoreDataFramework/Classes/NSFetchedPropertyDescription_Class/)
+[`NSManagedObject`](https://developer.apple.com/library/prerelease/watchos/documentation/Cocoa/Reference/CoreDataFramework/Classes/NSManagedObject_Class/s)
 [`NSManagedObjectModel`](https://developer.apple.com/library/prerelease/watchos/documentation/Cocoa/Reference/CoreDataFramework/Classes/NSManagedObjectModel_Class/)
 [`NSRelationshipDescription`](https://developer.apple.com/library/prerelease/watchos/documentation/Cocoa/Reference/CoreDataFramework/Classes/NSRelationshipDescription_Class/)
 
