@@ -163,6 +163,14 @@ func saveContext () {
 * `managedObjectContext` - 在应用程序中使用的被管理对象上下文
 * `saveContext` - 用于CoreData保存持久化数据，我们可以在此方法中添加一些错误处理的操作
 
+如果我们想要在其他类当中使用系统自动生成在`AppDelegate`当中的被管理对象上下文、被管理对象模型等内容，可以使用如下方法来获取一个当前应用的`AppDelegate`的单例对象。
+
+```swift
+var delegate = UIApplication.sharedApplication().delegate as? AppDelegate
+```
+
+其中`.sharedApplication()`方法就是用来获取当前正在运行的应用程序对象（单例）的。
+
 如果想要自己__手动加载__数据模型文件，可以使用下面两种机制：
 
 * 使用`init?(contentsOfURL url: NSURL)`实例方法从一个指定的URL中加载。
@@ -247,9 +255,15 @@ var results = self.managedObjectContext?.executeFetchRequest(request!, error: ni
 
 ## 参考
 
+### 官方教程
+
 * [Managed Object Models](https://developer.apple.com/library/prerelease/ios/documentation/DataManagement/Devpedia-CoreData/)
 * [Using a Managed Object Model](https://developer.apple.com/library/ios/documentation/Cocoa/Conceptual/CoreData/)
 * [Core Data Model Editor Help](https://developer.apple.com/library/etc/redirect/xcode/ios/1048/recipes/xcode_help-core_data_modeling_tool/_index.html#//apple_ref/doc/uid/TP40010379)
 * [Core Data Model Versioning and Data Migration Programming Guide](http://developer.apple.com/library/ios/documentation/Cocoa/Conceptual/CoreDataVersioning/Articles/Introduction.html)
 * [create a new version of the current model](https://developer.apple.com/library/prerelease/ios/recipes/xcode_help-core_data_modeling_tool/Articles/creating_new_version.html#//apple_ref/doc/uid/TP40010379-CH8)
 * [Predicate Format String Syntax](https://developer.apple.com/library/prerelease/ios/documentation/Cocoa/Conceptual/Predicates/)
+
+### 网摘文章
+
+* [IOS 数据存储之 Core Data详解](http://www.cnblogs.com/jerehedu/p/4607368.html) by [杰瑞教育](http://www.cnblogs.com/jerehedu/)

@@ -6,6 +6,9 @@
 
 * [Core Data 学习笔记（一）框架简介](http://my.oschina.net/skyler/blog/483895)
 * [Core Data 学习笔记（二）被管理对象模型](http://my.oschina.net/skyler/blog/483906)
+* [Core Data 学习笔记（三）被管理对象](http://my.oschina.net/skyler/blog/485350)
+* [Core Data 学习笔记 应用示例](http://my.oschina.net/skyler/blog/485864)
+* [Core Data 学习笔记 常用链接整理](http://my.oschina.net/skyler/blog/486323)
 
 # 说明
 
