@@ -4,6 +4,9 @@
 
 ## 目录
 
+* [UIView Animations 学习笔记（一）简介及API说明](http://my.oschina.net/skyler/blog/486398)
+* [UIView Animation 学习笔记 应用示例](http://my.oschina.net/skyler/blog/486424)
+
 * [Core Data 学习笔记（一）框架简介](http://my.oschina.net/skyler/blog/483895)
 * [Core Data 学习笔记（二）被管理对象模型](http://my.oschina.net/skyler/blog/483906)
 * [Core Data 学习笔记（三）被管理对象](http://my.oschina.net/skyler/blog/485350)
