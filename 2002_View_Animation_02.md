@@ -68,21 +68,101 @@ class AnimatedTransitioning: NSObject, UIViewControllerAnimatedTransitioning {
 
 #### 2.1.2 [`UIViewControllerTransitioningDelegate`](https://developer.apple.com/library/prerelease/ios/documentation/UIKit/Reference/UIViewControllerTransitioningDelegate_protocol/index.html#//apple_ref/occ/intf/UIViewControllerTransitioningDelegate)
 
+```swift
+import UIKit
+
+class ViewController: UIViewController, UIViewControllerTransitioningDelegate {
+
+    // ...
+
+    let customPresentAnimationController = CustomPresentAnimationController()
+    let customDismissAnimationController = CustomDismissAnimationController()
+
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        
+        if segue.identifier == "showAction" {
+            let toViewController = segue.destinationViewController as! UIViewController
+
+            // 用于给目标视图指定切换动画代理
+            toViewController.transitioningDelegate = self
+        }
+    }
+
+    // 用于视图出现
+    func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return customPresentAnimationController
+    }
+    
+    // 用于视图消失
+    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return customDismissAnimationController
+    }
+
+    // ...
+}
+```
+
 #### 2.1.3 [`UIViewControllerInteractiveTransitioning`](https://developer.apple.com/library/prerelease/ios/documentation/UIKit/Reference/UIViewControllerInteractiveTransitioning_protocol/index.html#//apple_ref/doc/uid/TP40013059)
+
+> 注意：
+> 
+> `UIPercentDrivenInteractiveTransition`是`UIViewControllerInteractiveTransitioning`的子类
+
+```swift
+import UIKit
+
+class CustomInteractionController: UIPercentDrivenInteractiveTransition {
+    
+    var navigationController: UINavigationController!
+    var shouldCompleteTransition = false
+    var transitionInProgress = false
+    
+    var completionSeed: CGFloat {
+        return 1 - percentComplete
+    }
+    
+    func attachToViewController(viewController: UIViewController) {
+        navigationController = viewController.navigationController
+        setupGestureRecognizer(viewController.view)
+    }
+    
+    private func setupGestureRecognizer(view: UIView) {
+        view.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: "handlePanGesture:"))
+    }
+    
+    func handlePanGesture(gestureRecognizer: UIPanGestureRecognizer) {
+        let viewTranslation = gestureRecognizer.translationInView(gestureRecognizer.view!.superview!)
+        switch gestureRecognizer.state {
+        case .Began:
+            transitionInProgress = true
+            navigationController.popViewControllerAnimated(true)
+        case .Changed:
+            var const = CGFloat(fminf(fmaxf(Float(viewTranslation.x / 200.0), 0.0), 1.0))
+            shouldCompleteTransition = const > 0.5
+            updateInteractiveTransition(const)
+        case .Cancelled, .Ended:
+            transitionInProgress = false
+            if !shouldCompleteTransition || gestureRecognizer.state == .Cancelled {
+                cancelInteractiveTransition()
+            } else {
+                finishInteractiveTransition()
+            }
+        default:
+            println("Swift switch must be exhaustive, thus the default")
+        }
+    }
+}
+```
 
 #### 2.1.4 [`UIViewControllerContextTransitioning`](https://developer.apple.com/library/prerelease/ios/documentation/UIKit/Reference/UIViewControllerContextTransitioning_protocol/)
 
-The UIViewControllerContextTransitioning protocol’s methods provide contextual information for transition animations between view controllers. Do not adopt this protocol in your own classes, nor should you directly create objects that adopt this protocol. During a transition, the animator objects involved in that transition receive a fully configured context object from UIKit. Custom animator objects—objects that adopt the UIViewControllerAnimatorTransitioning or UIViewControllerInteractiveTransitioning protocol—should simply retrieve the information they need from the provided object.
-
-A context object encapsulates information about the views and view controllers involved in the transition. It also contains details about the how to execute the transition. For interactive transitions, the interactive animator object uses the methods of this protocol to report the animation’s progress. When the animation starts, the interactive animator object must save a pointer to the context object. Based on user interactions, the animator object then calls the updateInteractiveTransition:, finishInteractiveTransition, or cancelInteractiveTransition methods to report the progress toward completing the animation. Those methods send that information to UIKit so that it can drive the timing of the animations.
+`UIViewControllerContextTransitioning`协议的方法为切换的两个视图控制器提供上下文信息。在一次切换当中，切换中使用的动画对象从`UIKit`接受一个完整的配置上下文对象，`UIViewControllerAnimatorTransitioning`或`UIViewControllerInteractiveTransitioning`协议的方法从提供的对象中提取它们需要的信息。
 
 __访问切换对象__
 
-* [`containerView()`](https://developer.apple.com/library/prerelease/ios/documentation/UIKit/Reference/UIViewControllerContextTransitioning_protocol/index.html#//apple_ref/occ/intfm/UIViewControllerContextTransitioning/containerView) 必须
-* [`viewControllerForKey(_:)`](https://developer.apple.com/library/prerelease/ios/documentation/UIKit/Reference/UIViewControllerContextTransitioning_protocol/index.html#//apple_ref/occ/intfm/UIViewControllerContextTransitioning/viewControllerForKey:) 必须
-* [`viewForKey(_:)`](https://developer.apple.com/library/prerelease/ios/documentation/UIKit/Reference/UIViewControllerContextTransitioning_protocol/index.html#//apple_ref/occ/intfm/UIViewControllerContextTransitioning/viewForKey:) 必须
-
-`containerView`获取在动画执行过程中作为父视图的视图。
+* [`containerView()`](https://developer.apple.com/library/prerelease/ios/documentation/UIKit/Reference/UIViewControllerContextTransitioning_protocol/index.html#//apple_ref/occ/intfm/UIViewControllerContextTransitioning/containerView)：获取在动画执行过程中作为父视图的视图。
+* [`viewControllerForKey(_:)`](https://developer.apple.com/library/prerelease/ios/documentation/UIKit/Reference/UIViewControllerContextTransitioning_protocol/index.html#//apple_ref/occ/intfm/UIViewControllerContextTransitioning/viewControllerForKey:)：Key可选值参数见下方的__常量__部分。
+* [`viewForKey(_:)`](https://developer.apple.com/library/prerelease/ios/documentation/UIKit/Reference/UIViewControllerContextTransitioning_protocol/index.html#//apple_ref/occ/intfm/UIViewControllerContextTransitioning/viewForKey:)
 
 __获取切换框体矩形__
 

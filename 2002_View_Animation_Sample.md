@@ -109,10 +109,12 @@ override func viewDidAppear(animated: Bool) {
 
 1. 新建一个Xcode iOS项目，类型选择“Single View Application”
 2. 打开StoryBoard，拖入一个`View Controller`
-3. 向项目添加文件，分别为“ActionViewController.swift”、“CustomPresentAnimationController.swift”、“CustomDismissAnimationController.swift”。其中“ActionViewController.swift”为`UIViewController`的子类，“CustomPresentAnimationController.swift”、“CustomDismissAnimationController.swift”为`NSObject`的子类。
-4. 设置新拖如的`View Controller`的类为`ActionViewController`
+3. 向项目添加文件，分别为“ActionViewController.swift”、“CustomPresentAnimationController.swift”、“CustomDismissAnimationController.swift”、“CustomNavigationAnimationController.swift”。其中“ActionViewController.swift”为`UIViewController`的子类，“CustomPresentAnimationController.swift”、“CustomDismissAnimationController.swift”“CustomNavigationAnimationController.swift”、“CustomNavigationAnimationController.swift”为`NSObject`的子类。
+4. 设置新拖入的`View Controller`的类为`ActionViewController`
 5. 设置`Action View Controller`的背景色，并拖入一个按钮，修改按钮标题为“Dismiss”
 6. 为主视图添加一个导航条按钮，并添加到`Action View Controller`的Segue，设置Segue的类型为`Present Modal`，用于弹出`Action View Controller`
+7. 为主视图添加一个按钮，并修改文字为“Toggle Navigation Transition”
+8. 拖拽一个ViewController到画板，然后关联“Toggle Navigation Transition”按钮到新添加的ViewController
 
 > 注意：
 >
@@ -179,10 +181,240 @@ class ViewController: UIViewController, UIViewControllerTransitioningDelegate {
 }
 ```
 
+![](imgs/2002_Demo_01.gif)
+
 ### 3. 视图消失切换效果
 
+向CustomDismissAnimationController.swift添加如下代码。
+
+```swift
+import UIKit
+
+class CustomDismissAnimationController: NSObject, UIViewControllerAnimatedTransitioning {
+
+    func transitionDuration(transitionContext: UIViewControllerContextTransitioning) -> NSTimeInterval {
+        return 1.0
+    }
+    
+    func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
+        
+        let fromViewController = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey)!
+        let toViewController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)!
+        let finalFrameForVC = transitionContext.finalFrameForViewController(toViewController)
+        let containerView = transitionContext.containerView()
+        
+        toViewController.view.frame = finalFrameForVC
+        toViewController.view.alpha = 0.5
+        containerView.addSubview(toViewController.view)
+        containerView.sendSubviewToBack(toViewController.view)
+        
+        UIView.animateWithDuration(transitionDuration(transitionContext), animations: {
+            fromViewController.view.frame = CGRectInset(fromViewController.view.frame, fromViewController.view.frame.size.width / 2, fromViewController.view.frame.size.height / 2)
+            toViewController.view.alpha = 1.0
+            }, completion: {
+                finished in
+                transitionContext.completeTransition(true)
+        })
+    }
+}
+```
+
+向ViewController.swift添加如下代码。
+
+```swfit
+import UIKit
+
+class ViewController: UIViewController, UIViewControllerTransitioningDelegate {
+
+    // ..
+
+    // MARK: - for Segue's present modally action
+    
+    // ...
+
+    let customDismissAnimationController = CustomDismissAnimationController()
+    
+    @IBAction func dimssViewController(segue: UIStoryboardSegue) {
+        
+    }
+    
+    // MARK: - UIViewControllerTransitioningDelegate's method
+    
+    // ...
+    
+    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return customDismissAnimationController
+    }
+}
+```
+
+![](imgs/2002_Demo_02.gif)
+
 ### 4. 视图导航切换效果
+
+向CustomNavigationAnimationController.swift添加如下代码。（实际上是使用第三步的切换效果）
+
+```swift
+import UIKit
+
+class CustomNavigationAnimationController: NSObject, UIViewControllerAnimatedTransitioning {
+    
+    func transitionDuration(transitionContext: UIViewControllerContextTransitioning) -> NSTimeInterval {
+        return 2.0
+    }
+    
+    func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
+        let fromViewController = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey)!
+        let toViewController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)!
+        let finalFrameForVC = transitionContext.finalFrameForViewController(toViewController)
+        let containerView = transitionContext.containerView()
+        
+        toViewController.view.frame = finalFrameForVC
+        toViewController.view.alpha = 0.5
+        containerView.addSubview(toViewController.view)
+        containerView.sendSubviewToBack(toViewController.view)
+        
+        UIView.animateWithDuration(transitionDuration(transitionContext), animations: {
+            fromViewController.view.frame = CGRectInset(fromViewController.view.frame, fromViewController.view.frame.size.width / 2, fromViewController.view.frame.size.height / 2)
+            toViewController.view.alpha = 1.0
+            }, completion: {
+                finished in
+                transitionContext.completeTransition(true)
+        })
+    }
+}
+```
+
+向ViewController.swift添加如下代码。
+
+```swift
+import UIKit
+
+class ViewController: UIViewController, UIViewControllerTransitioningDelegate, UINavigationControllerDelegate {
+
+    // ...
+
+    // MARK: - for Segue's present modally action
+    
+    // ...
+
+    let customNavigationAnimationController = CustomNavigationAnimationController()
+    
+    // MARK: - UIViewControllerTransitioningDelegate's method
+    
+    // ...
+    
+    // MARK: - UINavigationControllerDelegate's method
+    
+    func navigationController(navigationController: UINavigationController, animationControllerForOperation operation: UINavigationControllerOperation, fromViewController fromVC: UIViewController, toViewController toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return customNavigationAnimationController
+    }
+}
+```
+
+![](imgs/2002_Demo_03.gif)
+
+#### 添加交互
+
+注：此效果是后来添加的，由于在设计Demo的时候没有考虑到，所以就在Demo项目中就没有实现。代码来自参考的文章。
+
+新建一个“CustomInteractionController”类。并编辑这个类文件为如下所示。
+
+```swift
+import UIKit
+
+class CustomInteractionController: UIPercentDrivenInteractiveTransition {
+    
+    var navigationController: UINavigationController!
+    var shouldCompleteTransition = false
+    var transitionInProgress = false
+    
+    var completionSeed: CGFloat {
+        return 1 - percentComplete
+    }
+    
+    func attachToViewController(viewController: UIViewController) {
+        navigationController = viewController.navigationController
+        setupGestureRecognizer(viewController.view)
+    }
+    
+    private func setupGestureRecognizer(view: UIView) {
+        view.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: "handlePanGesture:"))
+    }
+    
+    func handlePanGesture(gestureRecognizer: UIPanGestureRecognizer) {
+        let viewTranslation = gestureRecognizer.translationInView(gestureRecognizer.view!.superview!)
+        switch gestureRecognizer.state {
+        case .Began:
+            transitionInProgress = true
+            navigationController.popViewControllerAnimated(true)
+        case .Changed:
+            var const = CGFloat(fminf(fmaxf(Float(viewTranslation.x / 200.0), 0.0), 1.0))
+            shouldCompleteTransition = const > 0.5
+            updateInteractiveTransition(const)
+        case .Cancelled, .Ended:
+            transitionInProgress = false
+            if !shouldCompleteTransition || gestureRecognizer.state == .Cancelled {
+                cancelInteractiveTransition()
+            } else {
+                finishInteractiveTransition()
+            }
+        default:
+            println("Swift switch must be exhaustive, thus the default")
+        }
+    }
+}
+```
+
+向ViewController.swift文件添加如下代码。
+
+```swift
+//
+//  ViewController.swift
+//  ViewTransition
+//
+//  Created by CongJunfeng on 15/8/2.
+//  Copyright (c) 2015年 46day. All rights reserved.
+//
+
+import UIKit
+
+class ViewController: UIViewController, UIViewControllerTransitioningDelegate, UINavigationControllerDelegate {
+
+    // ...
+
+    // MARK: - for Segue's present modally action
+    
+    // ...
+    
+    let customInteractionController = CustomInteractionController() // for Interaction
+    
+    // MARK: - UIViewControllerTransitioningDelegate's method
+    
+    // ...
+    
+    // MARK: - UINavigationControllerDelegate's method
+    
+    func navigationController(navigationController: UINavigationController, animationControllerForOperation operation: UINavigationControllerOperation, fromViewController fromVC: UIViewController, toViewController toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        
+        /**
+        *  for Interaction
+        */
+        if operation == .Push {
+            customInteractionController.attachToViewController(toVC)
+        }
+        
+        return customNavigationAnimationController
+    }
+    
+    // for Interaction
+    func navigationController(navigationController: UINavigationController, interactionControllerForAnimationController animationController: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
+        return customInteractionController.transitionInProgress ? customInteractionController : nil
+    }
+}
+```
 
 ## 参考
 
 * [Creating Simple View Animations in Swift](http://www.appcoda.com/view-animation-in-swift/)
+* [Introduction to Custom View Controller Transitions and Animations](http://www.appcoda.com/custom-view-controller-transitions-tutorial)

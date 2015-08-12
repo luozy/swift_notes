@@ -5,6 +5,7 @@
 ## 目录
 
 * [UIView Animations 学习笔记（一）简介及API说明](http://my.oschina.net/skyler/blog/486398)
+* [UIView Animations 学习笔记（二）定制动画效果及切换效果](http://my.oschina.net/skyler/blog/491596)
 * [UIView Animation 学习笔记 应用示例](http://my.oschina.net/skyler/blog/486424)
 
 * [Core Data 学习笔记（一）框架简介](http://my.oschina.net/skyler/blog/483895)

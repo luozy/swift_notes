@@ -5,7 +5,7 @@
 
 Looking at the built in apps from Apple on your iOS device, you will notice the various animated transitions as you move from one view to another for example the way view controllers are presented in master-detail views with a swipe that slides the detail view controller over the master view controller as seen in the Messages app or Settings app and the various transitions that represent a segue to another view controller.
 
-iOS 7 introduced custom view controller transitions which make it possible for developers to create their own animated transitions from one view controller to the next in their apps. In this tutorial, we’ll take a look at how to do this. We’ll also look at how to create gesture driven transitions called interactive transitions. To follow along, [download the starter project](https://www.dropbox.com/s/4p6kk0g3qua1kvt/CustomTransitionsStarter.zip?dl=0) which we’ll be using throughout the tutorial.
+iOS 7 introduced custom view controller transitions which make it possible for developers to create their own animated transitions from one view controller to the next in their apps. In this tutorial, we’ll take a look at how to do this. We’ll also look at howw to create gesture driven transitions called interactive transitions. To follow along, [download the starter project](https://www.dropbox.com/s/4p6kk0g3qua1kvt/CustomTransitionsStarter.zip?dl=0) which we’ll be using throughout the tutorial.
 
 ![](imgs/1008_Demo1.jpg)
 
